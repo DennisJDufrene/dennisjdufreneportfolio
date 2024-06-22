@@ -19,7 +19,7 @@ Navigating the Desktop
 
 The **Xfce** desktop environment is a simple desktop environment similar to Windows 98 or Windows XP.
 
-![Xfce Desktop](img/mintdesktop.png)
+![Xfce Desktop](./img/mintdesktop.png)
 
 By default, the desktop includes:
 
