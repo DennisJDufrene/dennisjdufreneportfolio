@@ -28,7 +28,7 @@ By default, the desktop includes:
 3.  Task Tray
 4.  Time/Calendar Widget
 
-![Task Bar](/img/minttaskbar.png)
+![Task Bar](img/minttaskbar.png)
 
 !!! note
 
