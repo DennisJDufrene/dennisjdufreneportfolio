@@ -1,0 +1,250 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Simple User Management API 1.0",
+    "description": "The User Management API is used to add, remove, or update user details.",
+    "version": "1.0."
+  },
+  "servers": [
+    {
+      "url": "https://fake.system.com/api/v1/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Active individuals that can perform actions in the application.",
+    }
+  ],
+  "paths": {
+    "/user/updateByEmail": {
+      "put": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Update an existing user.",
+        "description": "Update an existing user by email.",
+        "operationId": "updateUser",
+        "parameters": [
+          {
+            "name": "userEmail",
+            "in": "query",
+            "description": "Email must be in standard format.",
+            "required": true,
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Update an existing user.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid email supplied"
+          },
+          "404": {
+            "description": "User not found."
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    },
+    "/user/addByEmail": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Add a new user.",
+        "description": "Add a new user.",
+        "operationId": "addUser",
+        "parameters": [
+          {
+            "name": "userEmail",
+            "in": "query",
+            "description": "Email must be in standard format.",
+            "required": true,
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Create a new user in the system.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/user/getByEmail": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Find a user by email.",
+        "description": "Only one email can be entered. Email must be in standard email format.",
+        "operationId": "getUserByEmail",
+        "parameters": [
+          {
+            "name": "userEmail",
+            "in": "query",
+            "description": "Email must be in standard format.",
+            "required": true,
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid email format."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Delete a user.",
+        "description": "Remove a user from the system.",
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "name": "userEmail",
+            "in": "query",
+            "description": "Email must be in standard format.",
+            "required": true,
+			"explode": true, 
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid email"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "johnsmith@email.com"
+          },
+          "firstName": {
+            "type": "string",
+            "example": "John"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "Smith"
+          }
+        },
+        "xml": {
+          "name": "user"
+        }
+      }
+    }
+  }
+}
