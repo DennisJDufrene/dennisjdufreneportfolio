@@ -15,7 +15,7 @@ The TDMM uses a metric-based approach to assessing documentation and implementin
 * **Product level** - focuses on the product teams' collection and implementation of their product documentation.
 * **Content level** - focuses on the usefulness of content across individual documents, articles, and wiki pages.
 
-![](/img/triangle.png)
+![](img/triangle.png)
 
 The assessment results for each of these levels are combined to determine the overall maturity of the technical documentation across the organization and is categorized as:
 
@@ -26,7 +26,7 @@ The assessment results for each of these levels are combined to determine the ov
 * Level 4 - Managed
 * Level 5 - Optimized
 
-![](/img/bar.png)
+![](img/bar.png)
 
 Each of these categories are explained later in this document.
 
