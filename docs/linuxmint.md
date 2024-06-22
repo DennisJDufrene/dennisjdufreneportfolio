@@ -39,8 +39,8 @@ The Application Launcher
 
 All of the installed applications can be accessed via the **Application Launcher**. To access the **Application Launcher**, click the Linux Mint icon located on the task bar.
 
-![Linux Mint's Application Launcher](/img/mintapplauncher.png)
+![Linux Mint's Application Launcher](img/mintapplauncher.png)
 
 Applications are categorized by type or a list of all available applications can be viewed by clicking **All**.
 
-![Linux Mint's Application Launcher's All Category](/img/mintapplauncherall.png)
+![Linux Mint's Application Launcher's All Category](img/mintapplauncherall.png)
