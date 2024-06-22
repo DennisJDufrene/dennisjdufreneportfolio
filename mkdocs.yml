@@ -1,0 +1,67 @@
+site_name: Dennis Dufrene's Portfolio
+
+## publish with Surge. For more information, see https://surge.sh/help/getting-started-with-surge
+
+theme:
+    favicon: /img/logo.png
+    name: material
+    logo: img/logo.png
+    palette:
+       scheme: slate
+       primary: indigo
+       accent: indigo
+##    features:
+##      - navigation.sections
+
+extra_css:
+    - stylesheets/extra.css
+
+copyright: Copyright &copy; 2024 <a href="https://www.linkedin.com/in/dennisdufrene/">Dennis Dufrene</a> <br>
+           Graphic icons created by <a href="https://www.flaticon.com/free-icons/graphic" title="graphic icons">Freepik - Flaticon</a>
+
+plugins:
+    - include-markdown
+    - table-reader
+    - img2fig
+    - search
+    - macros
+    - render_swagger
+
+markdown_extensions:
+  - admonition
+##  - fontawesome_markdown
+  - pymdownx.details
+  - pymdownx.superfences
+  - attr_list
+  - md_in_html
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - toc:
+      permalink: true
+
+
+nav:
+   - Home: index.md
+   - About Me: about_me.md
+   - Developer Documentation:
+      - Developer Documentation Overview: dev_doc_overview.md
+      - API Documentation: get_user.md
+      - OpenAPI (Swagger) Documentation: get_user_swagger.md
+      - SDK Help File: nameservice.md
+      - YAML Help: config_file.md
+   - End User Documentation:
+      - End User Documentation Overview: enduser_doc_overview.md
+      - End User Guide (PDF): user_guide.md
+      - End User Guide (HTML): linuxmint.md
+      - Internal Stakeholder Report: sample_report.md
+      - Workflow Diagram: sample_workflow.md
+   - Process Documentation:
+      - Process Documentation Overview: process_doc_overview.md
+      - Technical Documentation Request Process: process_request_doc.md
+      - Technical Documentation Maturity Model: tdmm.md
+   - FAQ & Troubleshooting:
+      - FAQ & Troubleshooting Overview: misc_docs_overview.md
+      - FAQ: misc_faq.md
+      - Troubleshooting: misc_trouble.md
+
