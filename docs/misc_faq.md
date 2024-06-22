@@ -16,7 +16,7 @@ The following questions are frequently asked about this portfolio site.
 
 ??? faq "Where is this site hosted?"
 
-    This site is hosted at [Surge.sh](https://surge.sh/).
+    This site is hosted at [GitHub Pages](https://pages.github.com/).
    
 ??? faq "What markup languages were used to create this site?"
 
