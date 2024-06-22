@@ -1,9 +1,10 @@
 site_name: Dennis Dufrene's Portfolio
+site_url: https://dennisjdufrene.github.io/dennisjdufreneportfolio/
 
 ## publish with Surge. For more information, see https://surge.sh/help/getting-started-with-surge
 
 theme:
-    favicon: /img/logo.png
+    favicon: img/logo.png
     name: material
     logo: img/logo.png
     palette:
