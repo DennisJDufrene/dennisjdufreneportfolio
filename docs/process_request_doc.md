@@ -9,7 +9,7 @@ The documentation team uses a Jira-based (Kanban) workflow to fulfill documentat
 
 The primary role of the documentation team is to create external documentation to support product users. This support includes the creation of new documentation and the maintenance of existing documentation. However, the documentation team also provides editorial reviews of internal documentation. The following diagram helps to determine if your team should engage the documentation team.
 
-![](/img/requestflow.png)
+![](../img/requestflow.png)
 
 ## How to Make a Request
 
