@@ -1,7 +1,7 @@
 site_name: Dennis Dufrene's Portfolio
 site_url: https://dennisjdufrene.github.io/dennisjdufreneportfolio/
 
-## Publish to GitHub pages via `gh-pages`. See `publish.yml` for detals.
+## Publish to GitHub pages via `gh-pages`. See `publish.yml` for details.
 
 theme:
     favicon: img/logo.png
