@@ -1,7 +1,7 @@
 site_name: Dennis Dufrene's Portfolio
 site_url: https://dennisjdufrene.github.io/dennisjdufreneportfolio/
 
-## publish with Surge. For more information, see https://surge.sh/help/getting-started-with-surge
+## Publish to GitHub pages via `gh-pages`. See `publish.yml` for detals.
 
 theme:
     favicon: img/logo.png
