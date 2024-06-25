@@ -16,7 +16,7 @@ The following questions are frequently asked about this portfolio site.
 
 ??? faq "Where is this site hosted?"
 
-    This site is hosted at [GitHub Pages](https://pages.github.com/).
+    This site is hosted at [GitHub Pages](https://pages.github.com/). Git is used to manage and update the site and deployments are executed via GitHub Actions automatically when changes are committed to the `main` branch. 
    
 ??? faq "What markup languages were used to create this site?"
 
