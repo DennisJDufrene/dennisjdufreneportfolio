@@ -15,9 +15,43 @@ jobs:
       - name: Find files older than 7 days
         id: find_old_files
         run: |
-          # Find files older than 7 days and save to a variable
-          OLD_FILES=$(find $GITHUB_WORKSPACE -type f -mtime +7)
-          echo "old_files=${OLD_FILES}" >> $GITHUB_ENV
+          # Use Python to find files older than 7 days
+          echo "Checking for files older than 7 days..."
+          python3 - <<EOF
+import os
+import time
+from datetime import datetime, timedelta
+
+# Get the current time
+now = time.time()
+# Set the threshold for 7 days
+threshold = now - (7 * 86400)  # 7 days in seconds
+
+# List to hold old files
+old_files = []
+
+# Walk through the directory
+for dirpath, dirnames, filenames in os.walk('.'):
+    for filename in filenames:
+        filepath = os.path.join(dirpath, filename)
+        # Get the last modified time
+        if os.path.getmtime(filepath) < threshold:
+            old_files.append(filepath)
+
+# Print the old files
+if old_files:
+    print("\n".join(old_files))
+else:
+    print("No files older than 7 days.")
+
+# Output the old files to the environment variable
+if old_files:
+    print("old_files=" + "\n".join(old_files))
+else:
+    print("old_files=")
+EOF
+          # Capture the output into an environment variable
+          echo "old_files=$(cat old_files.txt)" >> $GITHUB_ENV
 
       - name: Create a new wiki page
         id: create_wiki_page
