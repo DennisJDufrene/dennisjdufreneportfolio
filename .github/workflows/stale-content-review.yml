@@ -1,66 +1,40 @@
-name: Check Old Markdown Files
+name: Docs Cleanup
 
 on:
   schedule:
-    - cron: '*/5 * * * *'  # Runs every 5 minutes
+    - cron: '*/5 * * * *'
 
 jobs:
-  check-old-md-files:
+
+  cleanup:
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Print current date
-        run: date
-
-      - name: Find old .md files in docs directory and subdirectories
-        id: find_old_md
-        run: |
-          # Get the current date in seconds since epoch
-          CURRENT_DATE=$(date +%s)
-          # Find .md files in the docs directory and check their last commit date
-          OLD_FILES=""
-          for file in $(find docs -name "*.md"); do
-            # Get the last commit date for the file in seconds since epoch
-            LAST_COMMIT_DATE=$(git log -1 --format="%ct" -- "$file")
-            # Calculate the age of the file in days
-            AGE_DAYS=$(( (CURRENT_DATE - LAST_COMMIT_DATE) / 86400 ))
-            # Print debugging information
-            echo "File: $file, Last Commit Date (epoch): $LAST_COMMIT_DATE, Current Date (epoch): $CURRENT_DATE, Age (days): $AGE_DAYS"
-            if [ $AGE_DAYS -gt 7 ]; then
-              OLD_FILES+="$file"$'\n'
-            fi
-          done
-          echo "old_files=$OLD_FILES" >> $GITHUB_ENV
-
-      - name: Create wiki page
-        if: env.old_files != ''
-        run: |
-          # Create a timestamp for the wiki page name
-          TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
-          WIKI_PAGE="OldMarkdownFiles_$TIMESTAMP.md"
-          echo "# Old Markdown Files - $TIMESTAMP" > $WIKI_PAGE
-          echo "The following .md files have a commit date older than 7 days in the docs directory and its subdirectories:" >> $WIKI_PAGE
-          echo "$OLD_FILES" >> $WIKI_PAGE
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        
+    - name: Find old files
+      id: old_files
+      run: |
+        # Find files in the docs folder that are older than 7 days
+        old_files=$(find docs -type f -mtime +7 -print0 | xargs -0 -I {} basename {})
+        echo "::set-output name=files::$old_files"
+        
+    - name: Print to Wiki
+      if: steps.old_files.outputs.files
+      run: |
+        # Create a new wiki page with the list of old files
+        wiki_page="Old Docs Files"
+        wiki_content=$(echo "${{ steps.old_files.outputs.files }}" | tr ' ' '\n')
+        gh wiki create "$wiki_page" --copy-to-clipboard <<< "$wiki_content"
+        
+    - name: Create Issue
+      if: steps.old_files.outputs.files
+      uses: actions/create-issue@v1
+      with:
+        title: 'Old Docs Files'
+        body: |
+          The following files in the docs folder are older than 7 days:
           
-          # Commit and push the new wiki page
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-          git clone https://github.com/${{ github.repository }}.wiki.git wiki
-          cp $WIKI_PAGE wiki/
-          cd wiki
-          git add .
-          git commit -m "Add old markdown files list - $TIMESTAMP"
-          git push
-
-      - name: Create GitHub issue
-        if: env.old_files != ''
-        run: |
-          # Create an issue with a link to the wiki page
-          ISSUE_TITLE="Old Markdown Files Detected"
-          ISSUE_BODY="The following .md files have a commit date older than 7 days in the docs directory and its subdirectories. Please check the [${{ steps.create_wiki_page.outputs.wiki_page }}](https://github.com/${{ github.repository }}.wiki/${{ steps.create_wiki_page.outputs.wiki_page }}) wiki page for details."
-          curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          -d "{\"title\": \"$ISSUE_TITLE\", \"body\": \"$ISSUE_BODY\"}" \
-          https://api.github.com/repos/${{ github.repository }}/issues
+          [View Wiki Page](${{ github.server_url }}/${{ github.repository }}/wiki/$wiki_page)
