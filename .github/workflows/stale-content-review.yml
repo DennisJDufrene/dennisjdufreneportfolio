@@ -1,6 +1,9 @@
 name: Docs Cleanup
 
 on:
+  push:
+    paths:
+      - 'docs/**'
   schedule:
     - cron: '*/5 * * * *'
 
