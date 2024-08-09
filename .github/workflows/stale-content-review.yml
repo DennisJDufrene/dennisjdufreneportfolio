@@ -20,7 +20,6 @@ jobs:
           python3 - <<EOF
 import os
 import time
-from datetime import datetime, timedelta
 
 # Get the current time
 now = time.time()
@@ -43,23 +42,44 @@ if old_files:
     print("\n".join(old_files))
 else:
     print("No files older than 7 days.")
-
-# Output the old files to the environment variable
-if old_files:
-    print("old_files=" + "\n".join(old_files))
-else:
-    print("old_files=")
 EOF
           # Capture the output into an environment variable
-          echo "old_files=$(cat old_files.txt)" >> $GITHUB_ENV
+          OLD_FILES=$(python3 -c "
+import os
+import time
+
+# Get the current time
+now = time.time()
+# Set the threshold for 7 days
+threshold = now - (7 * 86400)  # 7 days in seconds
+
+# List to hold old files
+old_files = []
+
+# Walk through the directory
+for dirpath, dirnames, filenames in os.walk('.'):
+    for filename in filenames:
+        filepath = os.path.join(dirpath, filename)
+        # Get the last modified time
+        if os.path.getmtime(filepath) < threshold:
+            old_files.append(filepath)
+
+# Print the old files
+if old_files:
+    print('\n'.join(old_files))
+else:
+    print('')  # Print empty if no old files found
+")
+
+          echo "old_files=${OLD_FILES}" >> $GITHUB_ENV
 
       - name: Create a new wiki page
         id: create_wiki_page
         run: |
-          if [ -n "$OLD_FILES" ]; then
+          if [ -n "${{ env.old_files }}" ]; then
             # Create a new wiki page with the old files
             WIKI_PAGE_TITLE="Old_Files_$(date +%Y%m%d%H%M%S)"
-            WIKI_CONTENT="# Files older than 7 days\n\n$OLD_FILES"
+            WIKI_CONTENT="# Files older than 7 days\n\n${{ env.old_files }}"
             echo "$WIKI_CONTENT" > "$WIKI_PAGE_TITLE.md"
             git clone https://github.com/${{ github.repository }}.wiki.git wiki
             mv "$WIKI_PAGE_TITLE.md" wiki/
