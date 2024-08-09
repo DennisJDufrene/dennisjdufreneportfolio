@@ -12,11 +12,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: List contents of docs directory
+        run: |
+          ls -R docs
+
       - name: Find old .md files in docs directory and subdirectories
         id: find_old_md
         run: |
           # Find .md files older than 7 days in the docs directory and its subdirectories
           OLD_FILES=$(find docs -name "*.md" -mtime +7)
+          echo "Found old files: $OLD_FILES"
           echo "old_files=$OLD_FILES" >> $GITHUB_ENV
 
       - name: Create wiki page
