@@ -18,7 +18,7 @@ jobs:
 
       - name: Find stale files
         run: |
-          find ./docs -type f -mtime +1 > stale-content-$(date + '%Y-%m-%d').txt
+          find ./docs -type f -mtime +30 > stale-content-$(date +"%Y%m%d").txt
 
       - name: Create Issue
         uses: peter-evans/create-issue-from-file@v5
