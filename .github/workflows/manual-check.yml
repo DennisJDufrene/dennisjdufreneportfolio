@@ -24,6 +24,7 @@ jobs:
           for file in $(git ls-files docs/*.md); do
             # Get the last commit date for the file
             last_commit_date=$(git log -1 --format="%ct" -- "$file")
+            echo "File: $file, Last Commit Date: $last_commit_date"  # Debugging output
             # Check if the last commit date is older than 7 days
             if [ "$last_commit_date" -lt "$seven_days_ago" ]; then
               unedited_files+="$file"$'\n'
