@@ -16,7 +16,7 @@ jobs:
         id: find_old_files
         run: |
           # Find files older than 7 days and save to a variable
-          OLD_FILES=$(find . -type f -mtime +7)
+          OLD_FILES=$(find $GITHUB_WORKSPACE -type f -mtime +7)
           echo "old_files=${OLD_FILES}" >> $GITHUB_ENV
 
       - name: Create a new wiki page
