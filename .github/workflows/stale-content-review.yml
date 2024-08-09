@@ -24,6 +24,7 @@ jobs:
             LAST_COMMIT_DATE=$(git log -1 --format="%ct" -- "$file")
             # Calculate the age of the file in days
             AGE_DAYS=$(( (CURRENT_DATE - LAST_COMMIT_DATE) / 86400 ))
+            echo "File: $file, Last Commit Date (epoch): $LAST_COMMIT_DATE, Age (days): $AGE_DAYS"
             if [ $AGE_DAYS -gt 7 ]; then
               OLD_FILES+="$file"$'\n'
             fi
