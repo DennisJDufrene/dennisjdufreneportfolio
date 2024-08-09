@@ -20,7 +20,7 @@ jobs:
           # Get the current date in seconds since epoch
           current_time=$(date +%s)
           # Find .md files in the docs directory not edited in the last 7 days (604800 seconds)
-          unedited_files=$(find docs -name "*.md" -type f -mtime +7)
+          unedited_files=$(find ../docs -name "*.md" -type f -mtime +7)
           echo "unedited_files<<EOF" >> $GITHUB_ENV
           echo "$unedited_files" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
