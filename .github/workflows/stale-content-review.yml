@@ -1,43 +1,54 @@
-name: Docs Cleanup
+name: Old Files to Wiki
 
 on:
-  push:
-    paths:
-      - 'docs/**'
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '*/5 * * * *'  # Runs every 5 minutes
 
 jobs:
-
-  cleanup:
+  update-wiki:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-        
-    - name: Find old files
-      id: old_files
-      run: |
-        # Find files in the docs folder that are older than 7 days
-        old_files=$(find docs -type f -mtime +7 -print0 | xargs -0 -I {} basename {})
-        echo "::set-output name=files::$old_files"
-        
-    - name: Print to Wiki
-      if: steps.old_files.outputs.files
-      run: |
-        # Create a new wiki page with the list of old files
-        wiki_page="Old Docs Files"
-        wiki_content=$(echo "${{ steps.old_files.outputs.files }}" | tr ' ' '\n')
-        gh wiki create "$wiki_page" --copy-to-clipboard <<< "$wiki_content"
-        
-    - name: Create Issue
-      if: steps.old_files.outputs.files
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        # Create a new issue with the link to the wiki page
-        issue_title="Old Docs Files"
-        issue_body="The following files in the docs folder are older than 7 days:\n\n[View Wiki Page](${{ github.server_url }}/${{ github.repository }}/wiki/$wiki_page)"
-        gh issue create --title "$issue_title" --body "$issue_body"
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Find files older than 7 days
+        id: find_old_files
+        run: |
+          # Find files older than 7 days and save to a variable
+          OLD_FILES=$(find . -type f -mtime +7)
+          echo "old_files=${OLD_FILES}" >> $GITHUB_ENV
+
+      - name: Create a new wiki page
+        id: create_wiki_page
+        run: |
+          if [ -n "$OLD_FILES" ]; then
+            # Create a new wiki page with the old files
+            WIKI_PAGE_TITLE="Old_Files_$(date +%Y%m%d%H%M%S)"
+            WIKI_CONTENT="# Files older than 7 days\n\n$OLD_FILES"
+            echo "$WIKI_CONTENT" > "$WIKI_PAGE_TITLE.md"
+            git clone https://github.com/${{ github.repository }}.wiki.git wiki
+            mv "$WIKI_PAGE_TITLE.md" wiki/
+            cd wiki
+            git config user.name "GitHub Action"
+            git config user.email "action@github.com"
+            git add "$WIKI_PAGE_TITLE.md"
+            git commit -m "Add wiki page for old files: $WIKI_PAGE_TITLE"
+            git push
+            echo "wiki_url=https://github.com/${{ github.repository }}.wiki/wiki/$WIKI_PAGE_TITLE" >> $GITHUB_ENV
+          else
+            echo "No files older than 7 days."
+            echo "wiki_url=" >> $GITHUB_ENV
+          fi
+
+      - name: Create an issue with the wiki link
+        if: env.wiki_url != ''
+        run: |
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/issues \
+            -d '{
+              "title": "Old Files Report",
+              "body": "See the list of files older than 7 days [here]('${{ env.wiki_url }}')."
+            }'
