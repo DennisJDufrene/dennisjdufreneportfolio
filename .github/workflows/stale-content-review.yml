@@ -34,10 +34,10 @@ jobs:
         
     - name: Create Issue
       if: steps.old_files.outputs.files
-      uses: actions/create-issue@v1
-      with:
-        title: 'Old Docs Files'
-        body: |
-          The following files in the docs folder are older than 7 days:
-          
-          [View Wiki Page](${{ github.server_url }}/${{ github.repository }}/wiki/$wiki_page)
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        # Create a new issue with the link to the wiki page
+        issue_title="Old Docs Files"
+        issue_body="The following files in the docs folder are older than 7 days:\n\n[View Wiki Page](${{ github.server_url }}/${{ github.repository }}/wiki/$wiki_page)"
+        gh issue create --title "$issue_title" --body "$issue_body"
