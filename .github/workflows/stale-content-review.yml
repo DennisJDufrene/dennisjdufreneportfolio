@@ -3,9 +3,7 @@ name: Stale Content Reivew
 on:
   schedule:
     - cron: "*/5 * * * *"
-  watch:
-    - main
-
+    
 jobs:
   state_content_review:
     runs-on: ubuntu-latest
