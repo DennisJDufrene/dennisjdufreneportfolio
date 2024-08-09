@@ -12,6 +12,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Print current date
+        run: date
+
       - name: Find old .md files in docs directory and subdirectories
         id: find_old_md
         run: |
@@ -24,7 +27,8 @@ jobs:
             LAST_COMMIT_DATE=$(git log -1 --format="%ct" -- "$file")
             # Calculate the age of the file in days
             AGE_DAYS=$(( (CURRENT_DATE - LAST_COMMIT_DATE) / 86400 ))
-            echo "File: $file, Last Commit Date (epoch): $LAST_COMMIT_DATE, Age (days): $AGE_DAYS"
+            # Print debugging information
+            echo "File: $file, Last Commit Date (epoch): $LAST_COMMIT_DATE, Current Date (epoch): $CURRENT_DATE, Age (days): $AGE_DAYS"
             if [ $AGE_DAYS -gt 7 ]; then
               OLD_FILES+="$file"$'\n'
             fi
