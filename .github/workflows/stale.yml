@@ -1,0 +1,57 @@
+name: Check Markdown Files
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'  # Runs every 5 minutes
+
+jobs:
+  check_md_files:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Find unedited .md files
+        id: find_files
+        run: |
+          # Get the current date in seconds since epoch
+          current_time=$(date +%s)
+          # Find .md files in the docs directory not edited in the last 7 days (604800 seconds)
+          unedited_files=$(find docs -name "*.md" -type f -mtime +7)
+          echo "unedited_files<<EOF" >> $GITHUB_ENV
+          echo "$unedited_files" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Create wiki page
+        id: create_wiki
+        run: |
+          if [ -z "$unedited_files" ]; then
+            echo "No unedited .md files found."
+            exit 0
+          fi
+          # Create a new wiki page
+          wiki_page="Unedited_MD_Files_$(date +%Y%m%d%H%M%S).md"
+          echo "# Unedited Markdown Files" > "$wiki_page"
+          echo "$unedited_files" >> "$wiki_page"
+          git clone https://github.com/${{ github.repository }}.wiki.git wiki
+          mv "$wiki_page" wiki/
+          cd wiki
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
+          git add "$wiki_page"
+          git commit -m "Add unedited markdown files list"
+          git push
+
+      - name: Create GitHub issue
+        run: |
+          if [ -z "$unedited_files" ]; then
+            echo "No unedited .md files found. Skipping issue creation."
+            exit 0
+          fi
+          # Create a new issue
+          issue_title="Review Unedited Markdown Files"
+          issue_body="A list of unedited markdown files has been created in the wiki: [View Wiki Page](https://github.com/${{ github.repository }}.wiki/wiki/$wiki_page)"
+          curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/${{ github.repository }}/issues -d "{\"title\":\"$issue_title\", \"body\":\"$issue_body\"}"
