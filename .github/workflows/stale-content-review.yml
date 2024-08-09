@@ -1,4 +1,4 @@
-name: Stale Content Review
+name: Check Old Markdown Files
 
 on:
   schedule:
@@ -12,20 +12,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Find old .md files
+      - name: Find old .md files in docs directory and subdirectories
         id: find_old_md
         run: |
-          # Find .md files older than 7 days
-          OLD_FILES=$(find . -name "*.md" -mtime +7)
+          # Find .md files older than 7 days in the docs directory and its subdirectories
+          OLD_FILES=$(find docs -name "*.md" -mtime +7)
           echo "old_files=$OLD_FILES" >> $GITHUB_ENV
 
       - name: Create wiki page
         if: env.old_files != ''
         run: |
-          # Create a new wiki page with the old .md files
-          WIKI_PAGE="OldMarkdownFiles.md"
-          echo "# Stale Content" > $WIKI_PAGE
-          echo "The following files include stale content:" >> $WIKI_PAGE
+          # Create a timestamp for the wiki page name
+          TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+          WIKI_PAGE="OldMarkdownFiles_$TIMESTAMP.md"
+          echo "# Old Markdown Files - $TIMESTAMP" > $WIKI_PAGE
+          echo "The following .md files are older than 7 days in the docs directory and its subdirectories:" >> $WIKI_PAGE
           echo "$OLD_FILES" >> $WIKI_PAGE
           
           # Commit and push the new wiki page
@@ -35,7 +36,7 @@ jobs:
           cp $WIKI_PAGE wiki/
           cd wiki
           git add .
-          git commit -m "Add old markdown files list"
+          git commit -m "Add old markdown files list - $TIMESTAMP"
           git push
 
       - name: Create GitHub issue
@@ -43,7 +44,7 @@ jobs:
         run: |
           # Create an issue with a link to the wiki page
           ISSUE_TITLE="Old Markdown Files Detected"
-          ISSUE_BODY="The following .md files are older than 7 days. Please check the [OldMarkdownFiles](https://github.com/${{ github.repository }}.wiki/OldMarkdownFiles) wiki page for details."
+          ISSUE_BODY="The following .md files are older than 7 days in the docs directory and its subdirectories. Please check the [${{ steps.create_wiki_page.outputs.wiki_page }}](https://github.com/${{ github.repository }}.wiki/${{ steps.create_wiki_page.outputs.wiki_page }}) wiki page for details."
           curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
           -d "{\"title\": \"$ISSUE_TITLE\", \"body\": \"$ISSUE_BODY\"}" \
           https://api.github.com/repos/${{ github.repository }}/issues
