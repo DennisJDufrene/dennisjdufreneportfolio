@@ -20,13 +20,13 @@ jobs:
 
       - name: Find stale files
         run: |
-          find ./docs/ -type f -mtime +1 > stale-content-$(date + '%Y-%m-%d').txt
+          find ./docs -type f -mtime +1 > stale-content-$(date + '%Y-%m-%d').txt
 
       - name: Create Issue
-        uses: peter-evans/create-issue-from-file@v2
+        uses: peter-evans/create-issue-from-file@v5
         with: 
           title: Stale Content Requires Review
-          content-filepath: stale-content-$(date +'%Y-%m-%d').txt
+          content-filepath: ./stale-content-$(date +'%Y-%m-%d').txt
           labels: "documentation"
           body: "The content in the attached file must be reviewed to ensure that it is current."
      
