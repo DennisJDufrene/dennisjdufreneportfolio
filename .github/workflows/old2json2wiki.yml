@@ -19,8 +19,8 @@ jobs:
       - name: Write JSON to Wiki
         run: |
           echo "${{ steps.find_old_files.outputs.json }}" > old_files.json
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
+          git config --global user.name "DennisJDufrene"
+          git config --global user.email "dennisjdufrene@protonmail.com"
           git clone https://github.com/${{ github.repository }}.wiki.git wiki
           cp old_files.json wiki/old_files.json
           cd wiki
