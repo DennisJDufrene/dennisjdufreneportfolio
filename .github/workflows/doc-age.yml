@@ -28,11 +28,21 @@ jobs:
           if [ -n "$old_commits" ] && [ "$old_commits" != "Error retrieving commits" ]; then
             echo "Old commits found in docs directory and its subdirectories:"
             echo "$old_commits"
-            echo "OLD_COMMITS=$old_commits" >> $GITHUB_ENV
+            # Write old commits to a temporary file
+            echo "$old_commits" > old_commits.txt
           else
             echo "No old commits found in docs directory or an error occurred."
-            echo "OLD_COMMITS=" >> $GITHUB_ENV
+            echo "" > old_commits.txt
           fi
+
+      - name: Set OLD_COMMITS environment variable
+        id: set_old_commits
+        run: |
+          # Read the contents of the temporary file into the OLD_COMMITS variable
+          OLD_COMMITS=$(cat old_commits.txt)
+          echo "OLD_COMMITS<<EOF" >> $GITHUB_ENV
+          echo "$OLD_COMMITS" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: Create GitHub Issue
         if: env.OLD_COMMITS != ''
