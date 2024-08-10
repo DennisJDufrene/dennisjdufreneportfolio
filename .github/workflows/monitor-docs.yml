@@ -1,0 +1,28 @@
+name: Monitor docs
+
+on:
+  workflow_dispatch:
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check for outdated docs
+        id: check_outdated
+        run: |
+          OUTDATED_MD_FILES=$(find docs -type f -name '*.md' -mtime +7 -print)
+          if [ -n "$OUTDATED_MD_FILES" ]; then
+            echo "::set-output name=outdated_files::$OUTDATED_MD_FILES"
+          fi
+
+      - name: Open issue for outdated docs
+        if: steps.check_outdated.outputs.outdated_files != ''
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const output = `${{steps.check_outdated.outputs.outdated_files}}`
+            const title = 'Outdated docs found'
+            const body = `The following docs are outdated by more than a week:\n\n${output}`
+            github.rest.issues.create({owner: context.repo.owner, repo: context.repo.repo, title, body})
