@@ -49,9 +49,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Automatically provided by GitHub Actions
         run: |
-          # Prepare the issue title and body
+          # Prepare the issue title
           title="Old Commits Detected in Docs Directory"
-          body="The following commits in the \`docs\` directory and its subdirectories are older than 7 days:\n\n\`\`\`\n${{ env.OLD_COMMITS }}\n\`\`\`"
+
+          # Format the body to list each old commit on its own line
+          body="The following commits in the \`docs\` directory and its subdirectories are older than 7 days:\n\n"
+          body+=$(echo "${{ env.OLD_COMMITS }}" | sed 's/^/* /')  # Prepend each commit with a bullet point
 
           # Create the issue using GitHub API with jq for proper JSON formatting
           json=$(jq -n --arg title "$title" --arg body "$body" \
