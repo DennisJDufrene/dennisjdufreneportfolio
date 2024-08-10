@@ -33,13 +33,16 @@ jobs:
 
       - name: Create GitHub Issue
         if: steps.find_old_files.outputs.old_files != ''
-        uses: peter-evans/create-issue@v2
-        with:
-          title: 'Old Documentation Files Detected'
-          body: |
-            The following files in the `docs` directory are older than one week:
-            ```
-            ${{ steps.find_old_files.outputs.old_files }}
-            ```
-          labels: 'documentation, stale'
-          
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Automatically provided by GitHub Actions
+        run: |
+          # Prepare the issue title and body
+          title="Old Documentation Files Detected"
+          body="The following files in the \`docs\` directory are older than one week:\n\n\`\`\`\n${{ steps.find_old_files.outputs.old_files }}\n\`\`\`"
+
+          # Create the issue using GitHub API
+          curl -X POST \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/issues \
+            -d "{\"title\": \"$title\", \"body\": \"$body\", \"labels\": [\"documentation\", \"stale\"]}"
