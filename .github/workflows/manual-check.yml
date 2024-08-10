@@ -14,8 +14,11 @@ jobs:
       - name: Find unedited .md files
         id: find_files
         run: |
-          # Get the date 7 days ago in seconds since epoch (CST)
-          seven_days_ago=$(date -d '7 days ago CST' +%s)
+          # Set the timezone to Chicago (CST/CDT)
+          export TZ="America/Chicago"
+
+          # Get the date 7 days ago in seconds since epoch
+          seven_days_ago=$(date -d '7 days ago' +%s)
           echo "Date 7 days ago: $(date -d @$seven_days_ago)"  # Debugging output
 
           # Initialize an empty array to hold unedited files
@@ -23,9 +26,9 @@ jobs:
 
           # Loop through all .md files in the docs directory
           for file in $(git ls-files docs/*.md); do
-            # Get the last commit date for the file that modified its content (CST)
+            # Get the last commit date for the file that modified its content
             last_commit_date=$(git log -1 --format="%ct" -- "$file")
-            echo "File: $file, Last Commit Date: $(date -d @$last_commit_date 'CST'), Timestamp: $last_commit_date"  # Debugging output
+            echo "File: $file, Last Commit Date: $(date -d @$last_commit_date), Timestamp: $last_commit_date"  # Debugging output
             
             # Check if the last commit date is older than 7 days
             if [ "$last_commit_date" -lt "$seven_days_ago" ]; then
@@ -41,12 +44,15 @@ jobs:
       - name: Create wiki page
         id: create_wiki
         run: |
+          # Set the timezone to Chicago (CST/CDT)
+          export TZ="America/Chicago"
+
           if [ -z "$unedited_files" ]; then
             echo "No unedited .md files found."
             exit 0
           fi
           # Create a new wiki page
-          wiki_page="Unedited_MD_Files_$(date -d 'now CST' +%Y%m%d%H%M%S).md"
+          wiki_page="Unedited_MD_Files_$(date -d 'now' +%Y%m%d%H%M%S).md"
           echo "# Unedited Markdown Files" > "$wiki_page"
           echo "$unedited_files" >> "$wiki_page"
           git clone https://github.com/${{ github.repository }}.wiki.git wiki
