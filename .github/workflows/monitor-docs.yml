@@ -13,13 +13,11 @@ jobs:
       - name: Find old commits
         id: find_old_commits
         run: |
-          # Get the current date in seconds since epoch
-          current_time=$(date +%s)
-          # Set the threshold for 7 days (7 days * 24 hours * 60 minutes * 60 seconds)
-          seven_days_ago=$((current_time - 604800))
+          # Get the current date in ISO 8601 format for 7 days ago
+          seven_days_ago=$(date -d '7 days ago' --utc +%Y-%m-%dT%H:%M:%SZ)
 
           # Find commits older than 7 days
-          old_commits=$(git log --since='7 days ago' --pretty=format:'%h - %an, %ar : %s' --reverse)
+          old_commits=$(git log --before="$seven_days_ago" --pretty=format:'%h - %an, %ar : %s' --reverse)
 
           # Check if any old commits were found
           if [ -n "$old_commits" ]; then
