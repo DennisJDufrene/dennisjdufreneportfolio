@@ -1,49 +1,36 @@
-name: Monitor Docs
+name: Monitor Old Docs Files
 
 on:
-  push:
-    paths:
-      - 'docs/**'
-  workflow_dispatch: # Allows manual triggering
+  schedule:
+    - cron: 0 0 * * *
+  workflow_dispatch:
 
 jobs:
-  check-old-files:
+  monitor:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Find old files in docs directory
-        id: find_old_files
+      - name: Find old files
         run: |
-          # Get the current date in ISO 8601 format for 7 days ago
-          seven_days_ago=$(date -d '7 days ago' --utc +%Y-%m-%dT%H:%M:%SZ)
+          old_files=()
+          while IFS= read -r -d '' file; do
+            if [ $(find "$file" -mtime +7) ]; then
+              old_files+=("$file")
+            fi
+          done < <(find docs/ -type f -print0)
+          echo "old_files=${old_files[@]}" >> $GITHUB_ENV
 
-          # Find files older than 7 days in the docs directory and its subdirectories
-          old_files=$(git ls-files --other --exclude-standard --directory --no-empty-directory --full-name --since="$seven_days_ago" -- docs/)
-
-          # Check if any old files were found
-          if [ -n "$old_files" ]; then
-            echo "Old files found in docs directory and its subdirectories:"
-            echo "$old_files" | tr '\n' ','
-            echo "OLD_FILES=$old_files" >> $GITHUB_OUTPUT
-          else
-            echo "No old files found in docs directory."
-            echo "OLD_FILES=" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Create GitHub Issue
-        if: ${{ steps.find_old_files.outputs.OLD_FILES != '' }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Automatically provided by GitHub Actions
-        run: |
-          # Prepare the issue title and body
-          title="Old Files Detected in Docs Directory"
-          body="The following files in the \`docs\` directory and its subdirectories are older than 7 days:\n\n\`\`\`\n${{ steps.find_old_files.outputs.OLD_FILES }}\n\`\`\`"
-
-          # Create the issue using GitHub API
-          curl -X POST \
-            -H "Authorization: token $GITHUB_TOKEN" \
-            -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/${{ github.repository }}/issues \
-            -d "{\"title\": \"$title\", \"body\": \"$body\", \"labels\": [\"stale\"]}"
+      - name: Open issue if old files found
+        if: env.old_files != ''
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: 'Old files in docs directory',
+              body: 'The following files in the `docs` directory are older than seven days:\n\n${old_files[@]}'
+            })
