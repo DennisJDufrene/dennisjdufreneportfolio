@@ -1,6 +1,9 @@
 name: Monitor Docs
 
 on:
+  push:
+    paths:
+      - 'docs/**'
   workflow_dispatch: # Allows manual triggering
 
 jobs:
