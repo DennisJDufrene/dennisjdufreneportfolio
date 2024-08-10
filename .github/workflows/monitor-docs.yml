@@ -10,22 +10,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Find old commits
+      - name: Find old commits in docs directory
         id: find_old_commits
         run: |
           # Get the current date in ISO 8601 format for 7 days ago
           seven_days_ago=$(date -d '7 days ago' --utc +%Y-%m-%dT%H:%M:%SZ)
 
-          # Find commits older than 7 days
-          old_commits=$(git log --before="$seven_days_ago" --pretty=format:'%h - %an, %ar : %s' --reverse)
+          # Find commits older than 7 days in the docs directory and its subdirectories
+          old_commits=$(git log --before="$seven_days_ago" --pretty=format:'%h - %an, %ar : %s' --reverse -- docs/)
 
           # Check if any old commits were found
           if [ -n "$old_commits" ]; then
-            echo "Old commits found:"
+            echo "Old commits found in docs directory and its subdirectories:"
             echo "$old_commits"
             echo "OLD_COMMITS=$old_commits" >> $GITHUB_ENV
           else
-            echo "No old commits found."
+            echo "No old commits found in docs directory."
             echo "OLD_COMMITS=" >> $GITHUB_ENV
           fi
 
@@ -35,8 +35,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Automatically provided by GitHub Actions
         run: |
           # Prepare the issue title and body
-          title="Old Commits Detected"
-          body="The following commits are older than 7 days:\n\n\`\`\`\n${{ env.OLD_COMMITS }}\n\`\`\`"
+          title="Old Commits Detected in Docs Directory"
+          body="The following commits in the \`docs\` directory and its subdirectories are older than 7 days:\n\n\`\`\`\n${{ env.OLD_COMMITS }}\n\`\`\`"
 
           # Create the issue using GitHub API
           curl -X POST \
