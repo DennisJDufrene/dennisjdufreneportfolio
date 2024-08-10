@@ -2,6 +2,9 @@ name: Monitor Old Commits in Docs Directory
 
 on:
   workflow_dispatch: # Allows manual triggering
+  push:
+    branches:
+      - main  # Only run on the main branch
 
 jobs:
   check-old-commits:
@@ -9,6 +12,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Fetch all history for all branches and tags
 
       - name: Find old commits in docs directory
         id: find_old_commits
@@ -17,15 +22,15 @@ jobs:
           seven_days_ago=$(date -d '7 days ago' --utc +%Y-%m-%dT%H:%M:%SZ)
 
           # Find commits older than 7 days in the docs directory and its subdirectories
-          old_commits=$(git log --before="$seven_days_ago" --pretty=format:'%h - %an, %ar : %s' --reverse -- docs/)
+          old_commits=$(git log --before="$seven_days_ago" --pretty=format:'%h - %an, %ar : %s' --reverse -- docs/ 2>/dev/null || echo "Error retrieving commits")
 
           # Check if any old commits were found
-          if [ -n "$old_commits" ]; then
+          if [ -n "$old_commits" ] && [ "$old_commits" != "Error retrieving commits" ]; then
             echo "Old commits found in docs directory and its subdirectories:"
             echo "$old_commits"
             echo "OLD_COMMITS=$old_commits" >> $GITHUB_ENV
           else
-            echo "No old commits found in docs directory."
+            echo "No old commits found in docs directory or an error occurred."
             echo "OLD_COMMITS=" >> $GITHUB_ENV
           fi
 
@@ -44,4 +49,3 @@ jobs:
             -H "Accept: application/vnd.github.v3+json" \
             https://api.github.com/repos/${{ github.repository }}/issues \
             -d "{\"title\": \"$title\", \"body\": \"$body\", \"labels\": [\"stale\"]}"
-
