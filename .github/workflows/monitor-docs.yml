@@ -15,30 +15,30 @@ jobs:
         run: |
           # Get the current date in seconds since epoch
           current_time=$(date +%s)
-          # Set the threshold for one week (7 days)
-          one_week_ago=$((current_time - 604800))
+          # Set the threshold for 7 days (7 days * 24 hours * 60 minutes * 60 seconds)
+          seven_days_ago=$((current_time - 604800))
           
-          # Find files in the docs directory older than one week
-          old_files=$(find docs -type f -not -path '*/build/*' -not -path '*/deploy/*' -printf '%T@ %p\n' | awk -v threshold="$one_week_ago" '$1 < threshold {print $2}')
+          # Find files in the docs directory older than 7 days, ignoring build and deploy directories
+          old_files=$(find docs -type f -not -path '*/build/*' -not -path '*/deploy/*' -not -path '*/.github/*' -printf '%T@ %p\n' | awk -v threshold="$seven_days_ago" '$1 < threshold {print $2}')
           
           # Check if any old files were found
           if [ -n "$old_files" ]; then
             echo "Old files found:"
             echo "$old_files"
-            echo "::set-output name=old_files::$old_files"
+            echo "OLD_FILES=$old_files" >> $GITHUB_ENV
           else
             echo "No old files found."
-            echo "::set-output name=old_files::"
+            echo "OLD_FILES=" >> $GITHUB_ENV
           fi
 
       - name: Create GitHub Issue
-        if: steps.find_old_files.outputs.old_files != ''
+        if: env.OLD_FILES != ''
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Automatically provided by GitHub Actions
         run: |
           # Prepare the issue title and body
           title="Old Documentation Files Detected"
-          body="The following files in the \`docs\` directory are older than one week:\n\n\`\`\`\n${{ steps.find_old_files.outputs.old_files }}\n\`\`\`"
+          body="The following files in the \`docs\` directory are older than 7 days:\n\n\`\`\`\n${{ env.OLD_FILES }}\n\`\`\`"
 
           # Create the issue using GitHub API
           curl -X POST \
