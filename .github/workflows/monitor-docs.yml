@@ -11,7 +11,7 @@ jobs:
       - name: Check for outdated docs
         id: check_outdated
         run: |
-          OUTDATED_MD_FILES=$(find docs -type f -name '*.md' -not -newermt "@7 days ago" -print)
+          OUTDATED_MD_FILES=$(find docs -type f -name '*.md' -not -newermt "7 days ago" -print)
           if [ -n "$OUTDATED_MD_FILES" ]; then
             echo "::set-output name=outdated_files::$OUTDATED_MD_FILES"
           fi
