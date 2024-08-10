@@ -1,48 +1,48 @@
-name: Monitor Docs Directory
+name: Monitor Docs
 
 on:
   workflow_dispatch: # Allows manual triggering
 
 jobs:
-  check-old-files:
+  check-old-commits:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Find old files
-        id: find_old_files
+      - name: Find old commits
+        id: find_old_commits
         run: |
           # Get the current date in seconds since epoch
           current_time=$(date +%s)
           # Set the threshold for 7 days (7 days * 24 hours * 60 minutes * 60 seconds)
           seven_days_ago=$((current_time - 604800))
-          
-          # Find files in the docs directory older than 7 days, ignoring build and deploy directories
-          old_files=$(find docs -type f -not -path '*/build/*' -not -path '*/deploy/*' -not -path '*/.github/*' -printf '%T@ %p\n' | awk -v threshold="$seven_days_ago" '$1 < threshold {print $2}')
-          
-          # Check if any old files were found
-          if [ -n "$old_files" ]; then
-            echo "Old files found:"
-            echo "$old_files"
-            echo "OLD_FILES=$old_files" >> $GITHUB_ENV
+
+          # Find commits older than 7 days
+          old_commits=$(git log --since='7 days ago' --pretty=format:'%h - %an, %ar : %s' --reverse)
+
+          # Check if any old commits were found
+          if [ -n "$old_commits" ]; then
+            echo "Old commits found:"
+            echo "$old_commits"
+            echo "OLD_COMMITS=$old_commits" >> $GITHUB_ENV
           else
-            echo "No old files found."
-            echo "OLD_FILES=" >> $GITHUB_ENV
+            echo "No old commits found."
+            echo "OLD_COMMITS=" >> $GITHUB_ENV
           fi
 
       - name: Create GitHub Issue
-        if: env.OLD_FILES != ''
+        if: env.OLD_COMMITS != ''
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Automatically provided by GitHub Actions
         run: |
           # Prepare the issue title and body
-          title="Old Documentation Files Detected"
-          body="The following files in the \`docs\` directory are older than 7 days:\n\n\`\`\`\n${{ env.OLD_FILES }}\n\`\`\`"
+          title="Old Commits Detected"
+          body="The following commits are older than 7 days:\n\n\`\`\`\n${{ env.OLD_COMMITS }}\n\`\`\`"
 
           # Create the issue using GitHub API
           curl -X POST \
             -H "Authorization: token $GITHUB_TOKEN" \
             -H "Accept: application/vnd.github.v3+json" \
             https://api.github.com/repos/${{ github.repository }}/issues \
-            -d "{\"title\": \"$title\", \"body\": \"$body\", \"labels\": [\"documentation\", \"stale\"]}"
+            -d "{\"title\": \"$title\", \"body\": \"$body\", \"labels\": [\"stale\"]}"
