@@ -1,28 +1,44 @@
-name: Monitor docs
+name: Monitor Docs Directory
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: # Allows manual triggering
 
 jobs:
-  monitor:
+  check-old-files:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Check for outdated docs
-        id: check_outdated
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Find old files
+        id: find_old_files
         run: |
-          OUTDATED_MD_FILES=$(find . -type d -name 'docs' -exec find {} -type f -name '*.md' -not -newermt "7 days ago" -print \;)
-          if [ -n "$OUTDATED_MD_FILES" ]; then
-            echo "::set-output name=outdated_files::$OUTDATED_MD_FILES"
+          # Get the current date in seconds since epoch
+          current_time=$(date +%s)
+          # Set the threshold for one week (7 days)
+          one_week_ago=$((current_time - 604800))
+          
+          # Find files in the docs directory older than one week
+          old_files=$(find docs -type f -not -path '*/build/*' -not -path '*/deploy/*' -printf '%T@ %p\n' | awk -v threshold="$one_week_ago" '$1 < threshold {print $2}')
+          
+          # Check if any old files were found
+          if [ -n "$old_files" ]; then
+            echo "Old files found:"
+            echo "$old_files"
+            echo "::set-output name=old_files::$old_files"
+          else
+            echo "No old files found."
+            echo "::set-output name=old_files::"
           fi
 
-      - name: Open issue for outdated docs
-        if: steps.check_outdated.outputs.outdated_files != ''
-        uses: actions/github-script@v5
+      - name: Create GitHub Issue
+        if: steps.find_old_files.outputs.old_files != ''
+        uses: peter-evans/create-issue@v2
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            const output = `${{steps.check_outdated.outputs.outdated_files}}`
-            const title = 'Outdated docs found'
-            const body = `The following docs are outdated by more than a week:\n\n${output}`
-            github.rest.issues.create({owner: context.repo.owner, repo: context.repo.repo, title, body})
+          title: 'Old Documentation Files Detected'
+          body: |
+            The following files in the `docs` directory are older than one week:
+            ```
+            ${{ steps.find_old_files.outputs.old_files }}
+            ```
+          labels: 'documentation, stale'
