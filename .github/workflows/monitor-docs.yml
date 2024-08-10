@@ -25,21 +25,21 @@ jobs:
           # Check if any old files were found
           if [ -n "$old_files" ]; then
             echo "Old files found in docs directory and its subdirectories:"
-            echo "$old_files"
-            echo "OLD_FILES=$old_files" >> $GITHUB_ENV
+            echo "$old_files" | tr '\n' ','
+            echo "OLD_FILES=$old_files" >> $GITHUB_OUTPUT
           else
             echo "No old files found in docs directory."
-            echo "OLD_FILES=" >> $GITHUB_ENV
+            echo "OLD_FILES=" >> $GITHUB_OUTPUT
           fi
 
       - name: Create GitHub Issue
-        if: env.OLD_FILES != ''
+        if: ${{ steps.find_old_files.outputs.OLD_FILES != '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Automatically provided by GitHub Actions
         run: |
           # Prepare the issue title and body
           title="Old Files Detected in Docs Directory"
-          body="The following files in the \`docs\` directory and its subdirectories are older than 7 days:\n\n\`\`\`\n${{ env.OLD_FILES }}\n\`\`\`"
+          body="The following files in the \`docs\` directory and its subdirectories are older than 7 days:\n\n\`\`\`\n${{ steps.find_old_files.outputs.OLD_FILES }}\n\`\`\`"
 
           # Create the issue using GitHub API
           curl -X POST \
