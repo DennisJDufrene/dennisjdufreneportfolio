@@ -1,0 +1,66 @@
+name: Monitor Old Commits in Docs Directory (Yearly Review)
+
+on:
+  workflow_dispatch: # Allows manual triggering
+#  schedule:
+#    - cron: '0 0 * * 1'  # Runs every Monday at midnight UTC
+
+jobs:
+  check-old-commits:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Fetch all history for all branches and tags
+
+      - name: Find old commits in docs directory
+        id: find_old_commits
+        run: |
+          # Get the current date in ISO 8601 format for 1 year ago
+          one_year_ago=$(date -d '1 year ago' --utc +%Y-%m-%dT%H:%M:%SZ)
+
+          # Find commits older than 1 year in the docs directory and its subdirectories
+          old_commits=$(git log --before="$one_year_ago" --pretty=format:'%h - %an, %ar : %s' --reverse -- docs/ 2>/dev/null || echo "Error retrieving commits")
+
+          # Check if any old commits were found
+          if [ -n "$old_commits" ] && [ "$old_commits" != "Error retrieving commits" ]; then
+            echo "Old commits found in docs directory and its subdirectories:"
+            echo "$old_commits"
+            # Write old commits to a temporary file
+            echo "$old_commits" > old_commits.txt
+          else
+            echo "No old commits found in docs directory or an error occurred."
+            echo "" > old_commits.txt
+          fi
+
+      - name: Set OLD_COMMITS environment variable
+        id: set_old_commits
+        run: |
+          # Read the contents of the temporary file into the OLD_COMMITS variable
+          OLD_COMMITS=$(cat old_commits.txt)
+          echo "OLD_COMMITS<<EOF" >> $GITHUB_ENV
+          echo "$OLD_COMMITS" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Create GitHub Issue
+        if: env.OLD_COMMITS != ''
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Automatically provided by GitHub Actions
+        run: |
+          # Prepare the issue title
+          title="Old Commits Detected in Docs Directory"
+
+          # Format the body to list each old commit on its own line
+          body="The following commits in the \`docs\` directory and its subdirectories are older than 1 year:\n\n"
+          body+=$(echo "${{ env.OLD_COMMITS }}" | sed 's/^/* /')  # Prepend each commit with a bullet point
+
+          # Create the issue using GitHub API with jq for proper JSON formatting
+          json=$(jq -n --arg title "$title" --arg body "$body" \
+            '{title: $title, body: $body, labels: ["stale"]}')
+
+          curl -X POST \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -d "$json" \
+            https://api.github.com/repos/${{ github.repository }}/issues
