@@ -5,9 +5,6 @@ on:
   push:
     branches:
       - main  # Change this to your default branch if it's not 'main'
-  schedule:
-    - cron: '0 0 * * *'  # Runs daily at midnight
- 
 
 jobs:
   check-docs-age:
@@ -17,37 +14,42 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-                  - name: Find Old Files
-  # You may pin to the exact commit or the version.
-  # uses: w3f/action-find-old-files@4bf8c41bfd0bbba976afc066297c2bf59712cb1b
-  uses: w3f/action-find-old-files@1.0.1
-  with:
-    # Stale docs min age
-    minAge: # default is 45
-    # Comma-separated list of direcrories to look for stale files in
-    dirs: # default is ["docs"]
-          
+      - name: Check last commit dates
+        id: check_dates
+        run: |
+          # Get the current date in seconds since epoch
+          current_date=$(date +%s)
+          # Initialize an array to hold old files
+          old_files=()
 
-                 - name: Create issues for old files
-  # You may pin to the exact commit or the version.
-  # uses: w3f/action-create-issues-for-old-files@1042b3f11a0aa4270e74e9028919409722417545
-  uses: w3f/action-create-issues-for-old-files@1.0.1
-  with:
-    # List of stale files
-    files: # default is staled.json
-    # Issue message body
-    body: # default is Last edit happened $$$ days ago 😬
-    # Issue title prefix
-    prefix: # default is [STALE]
-    # Issue labels
-    labels: # default is ["docs", "stale"]
-    # Assignees list
-    assignees: # optional
-    # Assignees list, pick one at random
-    randAssignees: # optional
-    # Max issues to create per one run
-    max: # default is 2
-          
+          # Find all files in the docs directory
+          for file in $(git ls-tree -r HEAD --name-only -- docs); do
+            # Get the last commit date for the file in seconds since epoch
+            last_commit_date=$(git log -1 --format="%ct" -- "$file")
+            # Calculate the age of the file
+            age=$(( (current_date - last_commit_date) / 86400 ))  # Convert seconds to days
+
+            # Check if the file is older than 7 days
+            if [ $age -gt 7 ]; then
+              old_files+=("$file")
+            fi
+          done
+
+          # Check if there are any old files
+          if [ ${#old_files[@]} -gt 0 ]; then
+            echo "Old files found: ${old_files[@]}"
+            echo "::set-output name=old_files::${old_files[*]}"
+          else
+            echo "No old files found."
+            echo "::set-output name=old_files::"
+          fi
+
+      - name: Create GitHub Issue
+        if: steps.check_dates.outputs.old_files != ''
+        uses: peter-evans/create-issue@v5
+        with:
+          title: 'Old Documentation Files Detected'
+          body: |
             The following files in the `docs` directory are older than 7 days:
             ```
             ${{ steps.check_dates.outputs.old_files }}
