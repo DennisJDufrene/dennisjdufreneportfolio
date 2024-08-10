@@ -23,10 +23,8 @@ jobs:
 
           # Loop through all .md files in the docs directory
           for file in $(git ls-files docs/*.md); do
-            # Get the last commit hash that modified the file
-            last_commit_hash=$(git rev-list -1 -- "$file")
-            # Get the commit date for that commit
-            last_commit_date=$(git show -s --format="%ct" "$last_commit_hash")
+            # Get the last commit date for the file that modified its content
+            last_commit_date=$(git log -1 --format="%ct" -- "$file")
             echo "File: $file, Last Commit Date: $(date -d @$last_commit_date), Timestamp: $last_commit_date"  # Debugging output
             
             # Check if the last commit date is older than 7 days
