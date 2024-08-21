@@ -1,0 +1,78 @@
+name: Check Date Modified
+
+on:
+  workflow_dispatch: # Allows manual triggering
+  push:
+    branches:
+      - main  # Only run on the main branch
+
+jobs:
+  check-old-files:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Fetch all history for all branches and tags
+
+      - name: Find old files in docs directory
+        id: find_old_files
+        run: |
+          # Get the current date in seconds since epoch for 7 days ago
+          seven_days_ago=$(date -d '7 days ago' +%s)
+
+          # Initialize an empty array to hold old files
+          old_files=()
+
+          # Loop through each file in the docs directory
+          while IFS= read -r -d '' file; do
+            # Get the last modified date of the file in seconds since epoch
+            modified_time=$(git log -1 --format="%at" -- "$file")
+
+            # Check if the file is older than 7 days
+            if [ "$modified_time" -lt "$seven_days_ago" ]; then
+              old_files+=("$file")
+            fi
+          done < <(find docs/ -type f -print0)
+
+          # Check if any old files were found
+          if [ ${#old_files[@]} -gt 0 ]; then
+            echo "Old files found in docs directory and its subdirectories:"
+            printf '%s\n' "${old_files[@]}"
+            # Write old files to a temporary file
+            printf '%s\n' "${old_files[@]}" > old_files.txt
+          else
+            echo "No old files found in docs directory."
+            echo "" > old_files.txt
+          fi
+
+      - name: Set OLD_FILES environment variable
+        id: set_old_files
+        run: |
+          # Read the contents of the temporary file into the OLD_FILES variable
+          OLD_FILES=$(cat old_files.txt)
+          echo "OLD_FILES<<EOF" >> $GITHUB_ENV
+          echo "$OLD_FILES" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Create GitHub Issue
+        if: env.OLD_FILES != ''
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Automatically provided by GitHub Actions
+        run: |
+          # Prepare the issue title
+          title="Old Files Detected in Docs Directory"
+
+          # Format the body to list each old file on its own line
+          body="The following files in the \`docs\` directory and its subdirectories are older than 7 days:\n\n"
+          body+=$(echo "${{ env.OLD_FILES }}" | sed 's/^/* /')  # Prepend each file with a bullet point
+
+          # Create the issue using GitHub API with jq for proper JSON formatting
+          json=$(jq -n --arg title "$title" --arg body "$body" \
+            '{title: $title, body: $body, labels: ["stale"]}')
+
+          curl -X POST \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -d "$json" \
+            https://api.github.com/repos/${{ github.repository }}/issues
