@@ -22,10 +22,10 @@ copyright: Copyright &copy; 2024 <a href="https://www.linkedin.com/in/dennisdufr
 
 plugins:
     - include-markdown
-    - table-reader
     - img2fig
     - search
     - macros
+    - table-reader
     - render_swagger
 
 markdown_extensions:
