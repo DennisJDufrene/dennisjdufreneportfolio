@@ -1,6 +1,6 @@
 # Process Documentation Overview
 
-This section includes the following documentation samples:
+This section provides examples of documentation that describes documentation processes used to support an organization and includes the following documentation samples:
 
 <div class="grid cards" markdown>
 
