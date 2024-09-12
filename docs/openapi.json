@@ -3,10 +3,12 @@
     "info": {
         "title": "Cat Facts API",
         "version": "1.0",
-        "host": "catfact.ninja",
-        "basePath": "/#",
-        "schemes": "https",
     },
+    "servers": [
+    {
+      "url": "https://catfact.ninja/#"
+    }
+  ],
     "paths": {
         "/breeds": {
             "get": {
