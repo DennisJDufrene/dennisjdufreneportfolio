@@ -5,13 +5,13 @@
         "version": "3.0.0",
     },
     "host": {
-         "catfact.ninja"
+         "catfact.ninja",
     },
     "basePath": {
-         "/#"
+         "/#",
     },
     "schemes": {
-         "https"
+         "https",
     },
     "paths": {
         "/breeds": {
