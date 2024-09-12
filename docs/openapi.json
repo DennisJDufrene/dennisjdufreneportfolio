@@ -33,7 +33,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/Breed"
+                                        "$ref": "https://catfact.ninja/#/components/schemas/Breed"
                                     }
                                 }
                             }
@@ -68,7 +68,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/CatFact"
+                                    "$ref": "https://catfact.ninja/#/components/schemas/CatFact"
                                 }
                             }
                         }
@@ -117,7 +117,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/CatFact"
+                                        "$ref": "https://catfact.ninja/#/components/schemas/CatFact"
                                     }
                                 }
                             }
