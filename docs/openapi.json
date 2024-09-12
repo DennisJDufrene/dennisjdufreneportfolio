@@ -6,13 +6,13 @@
     },
     "host": {
          "catfact.ninja"
-    }
+    },
     "basePath": {
          "/#"
-    }
+    },
     "schemes": {
          "https"
-    }
+    },
     "paths": {
         "/breeds": {
             "get": {
