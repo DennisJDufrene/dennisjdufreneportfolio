@@ -4,8 +4,17 @@
         "title": "Cat Facts API",
         "version": "1.0"
     },
+    "host": {
+         "catfact.ninja"
+    }
+    "basePath": {
+         "/#"
+    }
+    "schemes": {
+         "https"
+    }
     "paths": {
-        "https://catfact.ninja/#/breeds": {
+        "/breeds": {
             "get": {
                 "tags": [
                     "Breeds"
@@ -33,7 +42,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "https://catfact.ninja/#/components/schemas/Breed"
+                                        "$ref": "#/components/schemas/Breed"
                                     }
                                 }
                             }
@@ -68,7 +77,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "https://catfact.ninja/#/components/schemas/CatFact"
+                                    "$ref": "#/components/schemas/CatFact"
                                 }
                             }
                         }
@@ -117,7 +126,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "https://catfact.ninja/#/components/schemas/CatFact"
+                                        "$ref": "#/components/schemas/CatFact"
                                     }
                                 }
                             }
