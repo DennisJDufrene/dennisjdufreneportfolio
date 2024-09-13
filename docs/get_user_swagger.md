@@ -1,6 +1,8 @@
+<style>
 #swagger-ui-1 {
   background-color: white;
 }
+</style>
 
 !!! info
     
