@@ -2,6 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "Cat Facts API",
+        "description": "The Cat Facts API is a sample or demo application user interface that allows the user to get information about cats. This information includes a list of cat breeds and a variety of random details. This description was not part of the original OpenAPI file, but was added to improve the sample and better describe the API.",
         "version": "1.0",
     },
     "servers": [
