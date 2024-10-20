@@ -59,6 +59,8 @@ nav:
       - End User Help File (HTML): rss-from-source.md
       - Internal Stakeholder Report: sample_report.md
       - Workflow Diagram: sample_workflow.md
+   - Complete Doc Site (Semi-technical):
+      - Complete Site Overview: complete-site.md
    - Process Documentation:
       - Process Documentation Overview: process_doc_overview.md
       - Technical Documentation Request Process: process_request_doc.md
@@ -67,4 +69,3 @@ nav:
       - FAQ & Troubleshooting Overview: misc_docs_overview.md
       - FAQ: misc_faq.md
       - Troubleshooting: misc_trouble.md
-

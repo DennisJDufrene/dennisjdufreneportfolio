@@ -35,6 +35,14 @@ I am an experienced Technical Writer with proven success in creating accurate do
 
     [:octicons-arrow-right-24: View User Docs](enduser_doc_overview.md)
 
+-   :material-web-box:{ .lg .middle } __Complete Documentation Site__
+
+    ---
+
+    A complete documentation site used to showcase semi-technical information in a clean, easy-to-read, and easy-to-navigate format.
+
+    [:octicons-arrow-right-24: View the Documentation Site](complete-site.md)
+
 -   :material-sync:{ .lg .middle } __Process Documentation__
 
     ---
