@@ -33,6 +33,7 @@ markdown_extensions:
 ##  - fontawesome_markdown
   - pymdownx.details
   - pymdownx.superfences
+  - pymdownx.keys
   - attr_list
   - md_in_html
   - pymdownx.emoji:
@@ -45,16 +46,17 @@ markdown_extensions:
 nav:
    - Home: index.md
    - About Me: about_me.md
-   - Developer Documentation:
+   - Developer (Technical) Documentation:
       - Developer Documentation Overview: dev_doc_overview.md
       - API Documentation: get_user.md
       - OpenAPI (Swagger) Documentation: get_user_swagger.md
       - SDK Help File: nameservice.md
       - YAML Help: config_file.md
-   - End User Documentation:
+   - End User (Non-technical) Documentation:
       - End User Documentation Overview: enduser_doc_overview.md
       - End User Guide (PDF): user_guide.md
       - End User Guide (HTML): linuxmint.md
+      - End User Help File (HTML): rss-from-source.md
       - Internal Stakeholder Report: sample_report.md
       - Workflow Diagram: sample_workflow.md
    - Process Documentation:
