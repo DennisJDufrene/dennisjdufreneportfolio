@@ -28,10 +28,11 @@ jobs:
       - name: Check for Linting Errors
         id: check_errors
         run: |
-          # Check the output of the lint step for errors
-          if [ -n "${{ steps.lint.outputs.results }}" ]; then
+          # Capture the output of the lint step
+          LINT_OUTPUT="${{ steps.lint.outputs.results }}"
+          if echo "$LINT_OUTPUT" | grep -q "error"; then
             echo "Linting errors found."
-            echo "results=${{ steps.lint.outputs.results }}" >> $GITHUB_ENV
+            echo "results=$LINT_OUTPUT" >> $GITHUB_ENV
             echo "has_errors=true" >> $GITHUB_ENV
           else
             echo "No linting errors found."
