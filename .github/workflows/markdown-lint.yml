@@ -15,7 +15,6 @@ jobs:
     
     - name: Markdown Lint Check
       uses: DavidAnson/markdownlint-cli2-action@v9
-      continue-on-error: true
       with:
         config: .markdownlint.json
         output-file: markdown-lint-results.md
@@ -35,9 +34,11 @@ jobs:
           const fs = require('fs');
           const results = fs.readFileSync('markdown-lint-results.md', 'utf8');
           
-          github.rest.issues.create({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            title: 'Markdown Lint Errors',
-            body: results
-          });
+          if (results.trim() !== '') {
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: 'Markdown Lint Errors',
+              body: results
+            });
+          }
