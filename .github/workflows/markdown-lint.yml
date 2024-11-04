@@ -13,27 +13,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install markdownlint-cli2
+        run: npm install -g markdownlint-cli2
+
       - name: Lint Markdown files
         id: lint
-        uses: DavidAnson/markdownlint-cli2-action@v17
-        continue-on-error: true
-        with:
-          config: '.markdownlint.json'
-          globs:  |
-            *.md
-            docs/*.md
-            **/*.md
-            **/**/.*md
-
-      - name: Capture Linting Output
-        id: capture_output
         run: |
-          # Capture the output of the lint step
-          echo "${{ steps.lint.outputs.results }}" > lint_output.txt
-          cat lint_output.txt
-          if grep -q "error" lint_output.txt; then
+          LINT_OUTPUT=$(markdownlint **/*.md --config .markdownlint.json)
+          echo "$LINT_OUTPUT" > lint_output.txt
+          echo "$LINT_OUTPUT"
+          if [ -n "$LINT_OUTPUT" ]; then
             echo "Linting errors found."
-            echo "results=$(cat lint_output.txt)" >> $GITHUB_ENV
+            echo "results=$LINT_OUTPUT" >> $GITHUB_ENV
             echo "has_errors=true" >> $GITHUB_ENV
           else
             echo "No linting errors found."
@@ -50,5 +41,4 @@ jobs:
           curl -X POST \
             -H "Authorization: token $GITHUB_TOKEN" \
             -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/${{ github.repository }}/issues \
-            -d "{\"title\": \"$ISSUE_TITLE\", \"body\": \"$ISSUE_BODY\", \"labels\": [\"markdown\", \"linting\"]}"
+            https://api.github.com/repos/${{ github.repository }}/
