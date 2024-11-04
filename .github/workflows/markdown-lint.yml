@@ -25,14 +25,15 @@ jobs:
             **/*.md
             **/**/.*md
 
-      - name: Check for Linting Errors
-        id: check_errors
+      - name: Capture Linting Output
+        id: capture_output
         run: |
           # Capture the output of the lint step
-          LINT_OUTPUT="${{ steps.lint.outputs.results }}"
-          if echo "$LINT_OUTPUT" | grep -q "error"; then
+          echo "${{ steps.lint.outputs.results }}" > lint_output.txt
+          cat lint_output.txt
+          if grep -q "error" lint_output.txt; then
             echo "Linting errors found."
-            echo "results=$LINT_OUTPUT" >> $GITHUB_ENV
+            echo "results=$(cat lint_output.txt)" >> $GITHUB_ENV
             echo "has_errors=true" >> $GITHUB_ENV
           else
             echo "No linting errors found."
