@@ -1,7 +1,6 @@
 name: Markdown Lint
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - main
@@ -30,11 +29,12 @@ jobs:
           fi
 
       - name: Create issue if errors found
-        if: grep -q "error" markdown_errors.txt
         run: |
-          echo "Markdown errors found. Creating issue..."
-          curl -X POST \
-          https://api.github.com/repos/${GITHUB_REPOSITORY}/issues \
-          -H 'Authorization: Bearer ${GITHUB_TOKEN}' \
-          -H 'Content-Type: application/json' \
-          -d '{"title": "Markdown errors found", "body": "'"$(cat markdown_errors.txt)"'"}'
+          if grep -q "error" markdown_errors.txt; then
+            echo "Markdown errors found. Creating issue..."
+            curl -X POST \
+            https://api.github.com/repos/${GITHUB_REPOSITORY}/issues \
+            -H 'Authorization: Bearer ${GITHUB_TOKEN}' \
+            -H 'Content-Type: application/json' \
+            -d '{"title": "Markdown errors found", "body": "'"$(cat markdown_errors.txt)"'"}'
+          fi
