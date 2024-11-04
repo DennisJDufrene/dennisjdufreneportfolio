@@ -19,9 +19,10 @@ jobs:
         continue-on-error: true
         with:
           globs:  |
-          *.md |
-          docs/*.md |
-          **/*.md
+            *.md
+            docs/*.md
+            **/*.md
+            **/**/.*md
 
       - name: Check for Linting Errors
         id: check_errors
