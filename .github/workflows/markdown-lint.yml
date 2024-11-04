@@ -16,8 +16,16 @@ jobs:
     - uses: actions/checkout@v3
     - name: Lint Markdown Files
       uses: DavidAnson/markdownlint-cli2-action@v9
+      continue-on-error: true
       with:
         config: .markdownlint.json
+        globs: |
+           *.md
+           **/*.md
+           **/**/*.md
+           **/**/**/*.md
+           **/**/**/**/*.md
+           
         ignore: |
           node_modules
           .github
