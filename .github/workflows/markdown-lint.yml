@@ -1,44 +1,42 @@
-name: Markdown Lint
+name: Markdown Lint Check
 
-on: 
+on:
   push:
-  pull_request:
-  workflow_dispatch:  # Allow manual runs
+    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
+
   lint:
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Install markdownlint-cli2
-        run: npm install -g markdownlint-cli2
-
-      - name: Lint Markdown files
-        id: lint
-        run: |
-          LINT_OUTPUT=$(markdownlint **/*.md --config .markdownlint.json)
-          echo "$LINT_OUTPUT" > lint_output.txt
-          echo "$LINT_OUTPUT"
-          if [ -n "$LINT_OUTPUT" ]; then
-            echo "Linting errors found."
-            echo "results=$LINT_OUTPUT" >> $GITHUB_ENV
-            echo "has_errors=true" >> $GITHUB_ENV
-          else
-            echo "No linting errors found."
-            echo "has_errors=false" >> $GITHUB_ENV
-          fi
-
-      - name: Create GitHub Issue if Linting Errors Found
-        if: env.has_errors == 'true'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          ISSUE_TITLE="Markdown Linting Issues Found"
-          ISSUE_BODY="The following issues were found in the Markdown files:\n\n\`\`\`\n${{ env.results }}\n\`\`\`"
-          curl -X POST \
-            -H "Authorization: token $GITHUB_TOKEN" \
-            -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/${{ github.repository }}/
+    - uses: actions/checkout@v3
+    
+    - name: Markdown Lint Check
+      uses: DavidAnson/markdownlint-cli2-action@v9
+      with:
+        config-file: .markdownlint.json
+        output-file: markdown-lint-results.md
+        globs: |
+          **/*.md
+          *.md
+          docs/*.md
+          docs/**/.*md
+          docs/**/**/*.md
+        
+    - name: Create Issue
+      if: ${{ failure() }}
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const fs = require('fs');
+          const results = fs.readFileSync('markdown-lint-results.md', 'utf8');
+          
+          github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: 'Markdown Lint Errors',
+            body: results
+          });
