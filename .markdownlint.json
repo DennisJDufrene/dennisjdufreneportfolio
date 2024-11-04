@@ -50,7 +50,7 @@
   },
   "ul-style": {
     "style": "dash"
-  }
+  },
   {
   "comment": "Relaxed rules",
 
@@ -58,5 +58,5 @@
   "line_length": false,
   "no-inline-html": false,
   "no-bare-urls": false,
-}
+},
 }
