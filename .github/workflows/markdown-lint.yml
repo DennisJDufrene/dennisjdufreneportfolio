@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   markdown-lint:
@@ -29,12 +30,14 @@ jobs:
           fi
 
       - name: Create issue if errors found
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if grep -q "error" markdown_errors.txt; then
             echo "Markdown errors found. Creating issue..."
             curl -X POST \
             https://api.github.com/repos/${GITHUB_REPOSITORY}/issues \
-            -H 'Authorization: Bearer ${GITHUB_TOKEN}' \
+            -H 'Authorization: Bearer $GITHUB_TOKEN' \
             -H 'Content-Type: application/json' \
             -d '{"title": "Markdown errors found", "body": "'"$(cat markdown_errors.txt)"'"}'
           fi
