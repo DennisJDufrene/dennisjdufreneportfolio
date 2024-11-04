@@ -22,14 +22,3 @@ jobs:
           node_modules
           .github
         fix: false
-        resultFile: markdownlint-results.txt
-    - name: Check Markdown Lint Results
-      run: |
-        if [ -s markdownlint-results.txt ]; then
-          echo "Markdown lint errors found:"
-          cat markdownlint-results.txt
-          exit 1
-        else
-          echo "No Markdown lint errors found."
-        fi
-
