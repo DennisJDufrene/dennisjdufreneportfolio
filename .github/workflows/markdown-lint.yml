@@ -1,0 +1,45 @@
+name: Markdown Lint
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:  # Allow manual runs
+  
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'  # You can specify the version you need
+
+      - name: Install markdownlint
+        run: npm install -g markdownlint-cli
+
+      - name: Lint Markdown files
+        id: lint
+        run: |
+          markdownlint **/*.md > lint-results.txt || true
+          echo "::set-output name=results::$(cat lint-results.txt)"
+
+      - name: Create GitHub Issue if Linting Fails
+        if: steps.lint.outputs.results != ''
+        uses: peter-evans/create-issue@v2
+        with:
+          title: 'Markdown Linting Issues Found'
+          body: |
+            The following issues were found in the Markdown files:
+            ```
+            ${{ steps.lint.outputs.results }}
+            ```
+          labels: markdown, linting
+          token: ${{ secrets.GITHUB_TOKEN }}
