@@ -20,10 +20,6 @@
   "hr-style": {
     "style": "---"
   },
-  "line-length": {
-    "strict": true,
-    "code_blocks": false
-  },
   "link-image-style": {
     "autolink": false,
     "inline": false,
