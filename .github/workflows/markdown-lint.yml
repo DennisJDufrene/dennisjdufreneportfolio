@@ -19,7 +19,6 @@ jobs:
       continue-on-error: true
       with:
         config: .markdownlint.json
-        output-file: markdown-lint-results.md
         globs: |
           **/*.md
           *.md
@@ -27,20 +26,25 @@ jobs:
           docs/**/.*md
           docs/**/**/*.md
         
+    - name: Check Lint Results
+      run: |
+        if [ -n "${{ steps.markdown-lint.outputs.results }}" ]; then
+          echo "Markdown lint errors found"
+          echo "${{ steps.markdown-lint.outputs.results }}"
+          exit 1
+        else
+          echo "No Markdown lint errors found"
+        fi
+      
     - name: Create Issue
-      if: ${{ steps.markdown-lint.outputs.has-errors == 'true' }}
+      if: ${{ failure() }}
       uses: actions/github-script@v6
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          const fs = require('fs');
-          const results = fs.readFileSync('markdown-lint-results.md', 'utf8');
-          
-          if (results.trim() !== '') {
-            github.rest.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: 'Markdown Lint Errors',
-              body: results
-            });
-          }
+          github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: 'Markdown Lint Errors',
+            body: "${{ steps.markdown-lint.outputs.results }}"
+          });
