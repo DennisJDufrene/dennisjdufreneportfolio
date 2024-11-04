@@ -18,28 +18,27 @@ jobs:
       continue-on-error: true
       run: |
         npm install -g markdownlint-cli2
-        results=$(markdownlint-cli2 --config .markdownlint.json --output-format json **/*.md *.md docs/*.md docs/**/.*md docs/**/**/*.md)
-        echo "::set-output name=results::$results"
-        if [ -n "$results" ]; then
-          echo "Markdown lint errors found"
-          exit 1
-        else
-          echo "No Markdown lint errors found"
-        fi
+        markdownlint-cli2 --config .markdownlint.json --output-format json **/*.md *.md docs/*.md docs/**/.*md docs/**/**/*.md
+      
+    - name: Check Lint Results
+      if: ${{ failure() }}
+      run: |
+        echo "Markdown lint errors found"
+        echo "::set-output name=has-errors::true"
+      id: check-lint
       
     - name: Create Issue
-      if: ${{ failure() }}
+      if: ${{ steps.check-lint.outputs.has-errors == 'true' }}
       uses: actions/github-script@v6
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          const results = `${{ steps.markdown-lint.outputs.results }}`;
+          const fs = require('fs');
+          const logs = fs.readFileSync('${{ github.workflow_job_log_url }}', 'utf8');
           
-          if (results.trim() !== '') {
-            github.rest.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: 'Markdown Lint Errors',
-              body: results
-            });
-          }
+          github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: 'Markdown Lint Errors',
+            body: logs
+          });
