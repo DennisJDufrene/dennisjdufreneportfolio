@@ -1,43 +1,35 @@
-name: Markdown Lint
+name: Markdown Linting
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
-  markdown-lint:
+
+  lint:
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - uses: actions/checkout@v3
+    - name: Lint Markdown Files
+      uses: DavidAnson/markdownlint-cli2-action@v9
+      with:
+        config: .markdownlint.json
+        ignore: |
+          node_modules
+          .github
+        fix: false
+        resultFile: markdownlint-results.txt
+    - name: Check Markdown Lint Results
+      run: |
+        if [ -s markdownlint-results.txt ]; then
+          echo "Markdown lint errors found:"
+          cat markdownlint-results.txt
+          exit 1
+        else
+          echo "No Markdown lint errors found."
+        fi
 
-      - name: Run markdown lint
-        uses: DavidAnson/markdownlint-cli2-action@v2
-        id: markdownlint
-        with:
-          cli: 'markdownlint . --config .markdownlint.json --output markdownlint.json'
-        continue-on-error: true
-
-      - name: Print errors to file
-        run: |
-          if [ -s markdownlint.json ]; then
-            echo "Markdown errors found:" > markdown_errors.txt
-            cat markdownlint.json >> markdown_errors.txt
-          else
-            echo "No Markdown errors found." > markdown_errors.txt
-          fi
-
-      - name: Create issue if errors found
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          if grep -q "error" markdown_errors.txt; then
-            echo "Markdown errors found. Creating issue..."
-            curl -X POST \
-            https://api.github.com/repos/${GITHUB_REPOSITORY}/issues \
-            -H 'Authorization: Bearer $GITHUB_TOKEN' \
-            -H 'Content-Type: application/json' \
-            -d '{"title": "Markdown errors found", "body": "'"$(cat markdown_errors.txt)"'"}'
-          fi
