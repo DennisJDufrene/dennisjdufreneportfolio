@@ -22,6 +22,7 @@
   },
   "line-length": {
     "strict": false,
+    "stern": false,
     "code_blocks": false
   },
   "link-image-style": {
