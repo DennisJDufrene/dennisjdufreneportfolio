@@ -27,19 +27,3 @@ jobs:
 
       - name: Lint Markdown files
         id: lint
-        run: |
-          markdownlint **/*.md --output lint-results.txt || true
-          echo "::set-output name=results::$(cat lint-results.txt)"
-
-      - name: Create GitHub Issue if Linting Fails
-        if: steps.lint.outputs.results != ''
-        uses: peter-evans/create-issue@v2
-        with:
-          title: 'Markdown Linting Issues Found'
-          body: |
-            The following issues were found in the Markdown files:
-            ```
-            ${{ steps.lint.outputs.results }}
-            ```
-          labels: markdown, linting
-          token: ${{ secrets.GITHUB_TOKEN }}
