@@ -22,12 +22,13 @@ jobs:
         echo "::set-output name=results::$results"
         if [ -n "$results" ]; then
           echo "Markdown lint errors found"
+          exit 1
         else
           echo "No Markdown lint errors found"
         fi
       
     - name: Create Issue
-      if: ${{ steps.markdown-lint.outputs.results != '' }}
+      if: ${{ failure() }}
       uses: actions/github-script@v6
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
