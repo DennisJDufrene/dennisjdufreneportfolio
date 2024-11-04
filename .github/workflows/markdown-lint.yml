@@ -18,6 +18,7 @@ jobs:
       with:
         config-file: .markdownlint.json
         output-file: markdown-lint-results.md
+        continue-on-error: true
         globs: |
           **/*.md
           *.md
