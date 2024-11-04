@@ -37,14 +37,18 @@ jobs:
         fi
       
     - name: Create Issue
-      if: ${{ failure() }}
+      if: ${{ steps.markdown-lint.outputs.has-errors == 'true' }}
       uses: actions/github-script@v6
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          github.rest.issues.create({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            title: 'Markdown Lint Errors',
-            body: "${{ steps.markdown-lint.outputs.results }}"
-          });
+          const results = `${{ steps.markdown-lint.outputs.results }}`;
+          
+          if (results.trim() !== '') {
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: 'Markdown Lint Errors',
+              body: results
+            });
+          }
