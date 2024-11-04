@@ -1,27 +1,31 @@
-name: Markdown Lint Check
+name: Markdown Lint
 
 on:
   push:
-    branches: [ "main" ]
-  workflow_dispatch:
+    branches:
+      - main
 
 jobs:
-
-  lint:
+  markdown-lint:
     runs-on: ubuntu-latest
-    
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Markdown Lint Check
-      id: markdown-lint
-      run: |
-        npm install -g markdownlint-cli2
-        results=$(markdownlint-cli2 --config .markdownlint.json --output-format json **/*.md *.md docs/*.md docs/**/.*md docs/**/**/*.md)
-        echo "::set-output name=results::$results"
-        if [ -n "$results" ]; then
-          echo "Markdown lint errors found"
-          exit 1
-        else
-          echo "No Markdown lint errors found"
-        fi
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run markdown lint
+        uses: DavidAnson/markdownlint-cli2-action@v2
+        id: markdownlint
+        with:
+          config: '.markdownlint.json'
+          format: 'json'
+          output: 'markdownlint.json'
+
+      - name: Create issue if errors found
+        if: steps.markdownlint.outputs.errorCount > 0
+        run: |
+          echo "Markdown errors found. Creating issue..."
+          curl -X POST \
+          https://api.github.com/repos/${GITHUB_REPOSITORY}/issues \
+          -H 'Authorization: Bearer ${GITHUB_TOKEN}' \
+          -H 'Content-Type: application/json' \
+          -d '{"title": "Markdown errors found", "body": "See markdownlint.json for details"}'
