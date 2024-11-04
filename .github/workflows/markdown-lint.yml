@@ -16,10 +16,9 @@ jobs:
       - name: Lint Markdown files
         id: lint
         uses: DavidAnson/markdownlint-cli2-action@v17
+        continue-on-error: true
         with:
-          globs: |
-            *.md
-            !test/*.md
+          globs:  '**/*.md'
 
       - name: Check for Linting Errors
         id: check_errors
