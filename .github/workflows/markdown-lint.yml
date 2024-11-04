@@ -8,7 +8,7 @@ on:
     branches:
       - main
   workflow_dispatch:  # Allow manual runs
-  
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -22,13 +22,13 @@ jobs:
         with:
           node-version: '14'  # You can specify the version you need
 
-      - name: Install markdownlint
-        run: npm install -g markdownlint-cli
+      - name: Install markdownlint-cli2
+        run: npm install -g markdownlint-cli2
 
       - name: Lint Markdown files
         id: lint
         run: |
-          markdownlint **/*.md > lint-results.txt || true
+          markdownlint **/*.md --output lint-results.txt || true
           echo "::set-output name=results::$(cat lint-results.txt)"
 
       - name: Create GitHub Issue if Linting Fails
