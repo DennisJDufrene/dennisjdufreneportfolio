@@ -21,7 +21,7 @@ jobs:
 
       - name: Print errors to file
         run: |
-          if [ ${MARKDOWNLINT_ERROR_COUNT} -gt 0 ]; then
+          if [ -s markdownlint.json ]; then
             echo "Markdown errors found:" > markdown_errors.txt
             cat markdownlint.json >> markdown_errors.txt
           else
