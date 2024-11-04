@@ -23,7 +23,8 @@
   "line-length": {
     "strict": false,
     "stern": false,
-    "code_blocks": false
+    "code_blocks": false,
+    "line_length": 900
   },
   "link-image-style": {
     "autolink": false,
@@ -56,4 +57,5 @@
   "ul-style": {
     "style": "dash"
   }
+  "no-inline-html": false
 }
