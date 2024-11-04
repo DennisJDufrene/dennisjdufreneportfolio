@@ -28,6 +28,7 @@ jobs:
       - name: Check for Linting Errors
         id: check_errors
         run: |
+          # Check if the lint step produced any output
           if [ -n "${{ steps.lint.outputs.results }}" ]; then
             echo "Linting errors found."
             echo "results=${{ steps.lint.outputs.results }}" >> $GITHUB_ENV
