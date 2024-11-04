@@ -1,6 +1,7 @@
 name: Markdown Lint
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -16,9 +17,7 @@ jobs:
         uses: DavidAnson/markdownlint-cli2-action@v2
         id: markdownlint
         with:
-          config: '.markdownlint.json'
-          format: 'json'
-          output: 'markdownlint.json'
+          cli: 'markdownlint . --config .markdownlint.json --output markdownlint.json'
         continue-on-error: true
 
       - name: Print errors to file
@@ -31,7 +30,7 @@ jobs:
           fi
 
       - name: Create issue if errors found
-        if: steps.markdownlint.outputs.errorCount > 0
+        if: grep -q "error" markdown_errors.txt
         run: |
           echo "Markdown errors found. Creating issue..."
           curl -X POST \
@@ -39,4 +38,3 @@ jobs:
           -H 'Authorization: Bearer ${GITHUB_TOKEN}' \
           -H 'Content-Type: application/json' \
           -d '{"title": "Markdown errors found", "body": "'"$(cat markdown_errors.txt)"'"}'
-
