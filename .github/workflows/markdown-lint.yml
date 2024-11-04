@@ -14,12 +14,21 @@ jobs:
 
       - name: Run markdown lint
         uses: DavidAnson/markdownlint-cli2-action@v2
-        continue-on-error: true
         id: markdownlint
         with:
           config: '.markdownlint.json'
           format: 'json'
           output: 'markdownlint.json'
+        continue-on-error: true
+
+      - name: Print errors to file
+        run: |
+          if [ ${MARKDOWNLINT_ERROR_COUNT} -gt 0 ]; then
+            echo "Markdown errors found:" > markdown_errors.txt
+            cat markdownlint.json >> markdown_errors.txt
+          else
+            echo "No Markdown errors found." > markdown_errors.txt
+          fi
 
       - name: Create issue if errors found
         if: steps.markdownlint.outputs.errorCount > 0
@@ -29,4 +38,5 @@ jobs:
           https://api.github.com/repos/${GITHUB_REPOSITORY}/issues \
           -H 'Authorization: Bearer ${GITHUB_TOKEN}' \
           -H 'Content-Type: application/json' \
-          -d '{"title": "Markdown errors found", "body": "See markdownlint.json for details"}'
+          -d '{"title": "Markdown errors found", "body": "'"$(cat markdown_errors.txt)"'"}'
+
