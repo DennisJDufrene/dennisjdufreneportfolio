@@ -26,6 +26,7 @@ jobs:
         run: |
           if [ -n "${{ steps.lint.outputs.results }}" ]; then
             echo "Linting errors found."
+            echo "results=${{ steps.lint.outputs.results }}" >> $GITHUB_ENV
             echo "::set-output name=has_errors::true"
           else
             echo "No linting errors found."
@@ -38,7 +39,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           ISSUE_TITLE="Markdown Linting Issues Found"
-          ISSUE_BODY="The following issues were found in the Markdown files:\n\n\`\`\`\n${{ steps.lint.outputs.results }}\n\`\`\`"
+          ISSUE_BODY="The following issues were found in the Markdown files:\n\n\`\`\`\n${{ env.results }}\n\`\`\`"
           curl -X POST \
             -H "Authorization: token $GITHUB_TOKEN" \
             -H "Accept: application/vnd.github.v3+json" \
