@@ -25,8 +25,20 @@ jobs:
             **/*.md
             **/**/.*md
 
+      - name: Check for Linting Errors
+        id: check_errors
+        run: |
+          if [ -n "${{ steps.lint.outputs.results }}" ]; then
+            echo "Linting errors found."
+            echo "results=${{ steps.lint.outputs.results }}" >> $GITHUB_ENV
+            echo "::set-output name=has_errors::true"
+          else
+            echo "No linting errors found."
+            echo "::set-output name=has_errors::false"
+          fi
+
       - name: Create GitHub Issue if Linting Errors Found
-        if: steps.lint.outputs.has_errors == 'true'
+        if: steps.check_errors.outputs.has_errors == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
