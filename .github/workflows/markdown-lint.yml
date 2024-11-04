@@ -15,10 +15,10 @@ jobs:
     
     - name: Markdown Lint Check
       uses: DavidAnson/markdownlint-cli2-action@v9
+      continue-on-error: true
       with:
-        config-file: .markdownlint.json
+        config: .markdownlint.json
         output-file: markdown-lint-results.md
-        continue-on-error: true
         globs: |
           **/*.md
           *.md
