@@ -15,19 +15,20 @@ jobs:
     
     - name: Markdown Lint Check
       id: markdown-lint
-      uses: DavidAnson/markdownlint-cli2-action@v9
-      continue-on-error: true
-      with:
-        config: .markdownlint.json
-        globs: |
-          **/*.md
-          *.md
-          docs/*.md
-          docs/**/.*md
-          docs/**/**/*.md
-        
+      run: |
+        npm install -g markdownlint-cli2
+        results=$(markdownlint-cli2 --config .markdownlint.json --output-format json **/*.md *.md docs/*.md docs/**/.*md docs/**/**/*.md)
+        echo "::set-output name=results::$results"
+        if [ -n "$results" ]; then
+          echo "Markdown lint errors found"
+          echo "$results"
+          exit 1
+        else
+          echo "No Markdown lint errors found"
+        fi
+      
     - name: Create Issue
-      if: ${{ steps.markdown-lint.outputs.has-errors == 'true' }}
+      if: ${{ failure() }}
       uses: actions/github-script@v6
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
