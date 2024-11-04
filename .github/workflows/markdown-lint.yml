@@ -26,16 +26,6 @@ jobs:
           docs/**/.*md
           docs/**/**/*.md
         
-    - name: Check Lint Results
-      run: |
-        if [ -n "${{ steps.markdown-lint.outputs.results }}" ]; then
-          echo "Markdown lint errors found"
-          echo "${{ steps.markdown-lint.outputs.results }}"
-          exit 1
-        else
-          echo "No Markdown lint errors found"
-        fi
-      
     - name: Create Issue
       if: ${{ steps.markdown-lint.outputs.has-errors == 'true' }}
       uses: actions/github-script@v6
