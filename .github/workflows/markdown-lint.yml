@@ -18,7 +18,10 @@ jobs:
         uses: DavidAnson/markdownlint-cli2-action@v17
         continue-on-error: true
         with:
-          globs:  '**/*.md'
+          globs:  |
+          *.md
+          docs/*.md
+          **/*.md
 
       - name: Check for Linting Errors
         id: check_errors
