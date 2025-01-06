@@ -6,6 +6,7 @@ This section includes the following documentation samples:
 
 - [:fontawesome-solid-user: PDF User Guide](user_guide.md)
 - [:fontawesome-solid-user: HTML User Guide](linuxmint.md)
+- [:fontawesome-brands-product-hunt: HTML Product Overview](kbin-overview.md)
 - [:material-help-box: HTML Help File](rss-from-source.md)
 - [:material-file-document-multiple: Internal Report](sample_report.md)
 - [:octicons-workflow-24: Workflow Diagram](sample_workflow.md)
