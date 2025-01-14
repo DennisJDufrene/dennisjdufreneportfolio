@@ -21,15 +21,17 @@ The `x/nameservice` module uses one store to map `name` to its respective `whois
 
 -   `Price` - The price you will need to pay in order to buy the name.
 
-<!-- -->
-
-    type Whois struct {
-        Value string         `json:"value" yaml:"value"`
-        Owner sdk.AccAddress `json:"owner" yaml:"owner"`
-        Price sdk.Coins      `json:"price" yaml:"price"`
-    }
+```json linenums="1"
+type Whois struct {
+    Value string         `json:"value" yaml:"value"`
+    Owner sdk.AccAddress `json:"owner" yaml:"owner"`
+    Price sdk.Coins      `json:"price" yaml:"price"`
+}
+```
 
 If a name does not already have an owner, it should be initialized with a `MinPrice`. `MinPrice` is defined as an initial starting price for a name that was never previously owned.
+
+```py linenums="1"
 
     // MinNamePrice is Initial Starting Price for a name that was never previously owned
     var MinNamePrice = sdk.Coins{sdk.NewInt64Coin("nametoken", 1)}
@@ -39,6 +41,7 @@ If a name does not already have an owner, it should be initialized with a `MinPr
         return Whois{
             Price: MinNamePrice,
         }
+```
 
 ## State
 
@@ -62,14 +65,14 @@ Name owners set a value for a given name with the `MsgSetName` message. `MsgSetN
 
 -   `Owner` - The account of the name owner.
 
-<!-- -->
-
-    // MsgSetName defines a SetName message
-    type MsgSetName struct {
-        Name  string         `json:"name"`
-        Value string         `json:"value"`
-        Owner sdk.AccAddress `json:"owner"`
-    }
+```py linenums="1"
+// MsgSetName defines a SetName message
+type MsgSetName struct {
+    Name  string         `json:"name"`
+    Value string         `json:"value"`
+    Owner sdk.AccAddress `json:"owner"`
+}
+```
 
 ### MsgBuyName
 
@@ -81,14 +84,14 @@ Accounts can buy a name and become its owner with the `MsgBuyName` message. `Msg
 
 -   `Buyer` - The account of the potential buyer.
 
-<!-- -->
-
-    // MsgBuyName defines the BuyName message
-    type MsgBuyName struct {
-        Name  string         `json:"name"`
-        Bid   sdk.Coins      `json:"bid"`
-        Buyer sdk.AccAddress `json:"buyer"`
-    }
+```py linunumes="1"
+// MsgBuyName defines the BuyName message
+type MsgBuyName struct {
+    Name  string         `json:"name"`
+    Bid   sdk.Coins      `json:"bid"`
+    Buyer sdk.AccAddress `json:"buyer"`
+}
+```
 
 ### MsgDeleteName
 
@@ -98,13 +101,13 @@ Names can be deleted with the `MsgDeleteName` message. `MsgDeleteName` message r
 
 -   `Owner` - The account of the name owner.
 
-<!-- -->
-
-    // This Msg deletes a name.
-    type MsgDeleteName struct {
-        Name  string         `json:"name" yaml:"name"`
-        Owner sdk.AccAddress `json:"owner" yaml:"owner"`
-    }
+```py linenums="1"
+// This Msg deletes a name.
+type MsgDeleteName struct {
+    Name  string         `json:"name" yaml:"name"`
+    Owner sdk.AccAddress `json:"owner" yaml:"owner"`
+}
+```
 
 ## Parameters
 

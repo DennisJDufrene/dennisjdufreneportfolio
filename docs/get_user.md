@@ -11,15 +11,21 @@ The **Get User** transaction is used to retrieve user details from the system.
 
 Format the request as follows:
 
-    GET https://fake.system.com/users/user={user_email}
+```
+GET https://fake.system.com/users/user={user_email}
+```
 
 User email is required and must be formatted as a standard email address: `{string}@{string}.{string}`. For example:
 
-    dennis.dufrene@yahoo.com
+```
+dennis.dufrene@yahoo.com
+```
 
 ### Request Sample
 
-    GET https://fake.system.com/users/user=dennis.dufrene@yahoo.com
+```
+GET https://fake.system.com/users/user=dennis.dufrene@yahoo.com
+```
 
 ## Response
 
@@ -59,12 +65,14 @@ The system returns the following fields:
 
 ### Response Sample
 
-    {
-       "user_email" : "dennis.dufrene@yahoo.com",
-       "user_name" : "Dennis Dufrene",
-       "user_phone" : "5555555555",
-       "user_active" : "Yes",
-       },
+```json linenums="1"
+{
+   "user_email" : "dennis.dufrene@yahoo.com",
+   "user_name" : "Dennis Dufrene",
+   "user_phone" : "5555555555",
+   "user_active" : "Yes",
+},
+```
 
 ## Error Handling
 
