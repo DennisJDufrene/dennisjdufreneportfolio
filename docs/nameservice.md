@@ -84,7 +84,7 @@ Accounts can buy a name and become its owner with the `MsgBuyName` message. `Msg
 
 -   `Buyer` - The account of the potential buyer.
 
-```py linunumes="1"
+```py linenums="1"
 // MsgBuyName defines the BuyName message
 type MsgBuyName struct {
     Name  string         `json:"name"`
