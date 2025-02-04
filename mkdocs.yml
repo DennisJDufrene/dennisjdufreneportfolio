@@ -8,7 +8,7 @@ theme:
     name: material
     logo: img/logo.png
     palette:
-       scheme: slate
+       scheme: default
        primary: indigo
        accent: indigo
 ##    features:

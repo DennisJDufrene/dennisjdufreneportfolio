@@ -29,3 +29,7 @@ body p{
   text-justify: inter-word;
 }
 **/
+
+.md-typeset .grid.cards > ol > li, .md-typeset .grid.cards > ul > li, .md-typeset .grid > .card {
+  background-color: #f2f2f2;
+}

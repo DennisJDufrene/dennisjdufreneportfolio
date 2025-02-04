@@ -17,7 +17,7 @@ I am an experienced Technical Writer with proven success in creating accurate do
 
     A brief look at my skills and experience.
 
-    [:octicons-arrow-right-24: Read More](about_me.md)
+    [**Read More :octicons-arrow-right-24:**](about_me.md)
 
 -   :material-file-code:{ .lg .middle } __Developer Documentation__
 
@@ -25,7 +25,7 @@ I am an experienced Technical Writer with proven success in creating accurate do
 
     Samples of documentation intended for a developer audience.
 
-    [:octicons-arrow-right-24: View Developer Docs](dev_doc_overview.md)
+    [**View Developer Docs :octicons-arrow-right-24:**](dev_doc_overview.md)
 
 -   :material-file-document:{ .lg .middle } __User Documentation__
 
@@ -33,7 +33,7 @@ I am an experienced Technical Writer with proven success in creating accurate do
 
     Samples of documentation intended for a general/business user audience.
 
-    [:octicons-arrow-right-24: View User Docs](enduser_doc_overview.md)
+    [**View User Docs :octicons-arrow-right-24:**](enduser_doc_overview.md)
 
 -   :material-web-box:{ .lg .middle } __Complete Documentation Site__
 
@@ -41,7 +41,7 @@ I am an experienced Technical Writer with proven success in creating accurate do
 
     A complete documentation site used to showcase semi-technical information in a clean, easy-to-read, and easy-to-navigate format.
 
-    [:octicons-arrow-right-24: View the Documentation Site](complete-site.md)
+    [**View the Documentation Site :octicons-arrow-right-24:**](complete-site.md)
 
 -   :material-sync:{ .lg .middle } __Process Documentation__
 
@@ -49,7 +49,7 @@ I am an experienced Technical Writer with proven success in creating accurate do
 
     Samples of documentation that would guide the technical writing process and documentation maturity within an organization.
 
-    [:octicons-arrow-right-24: View Process Docs](process_doc_overview.md)
+    [**View Process Docs :octicons-arrow-right-24:**](process_doc_overview.md)
 
 -   :material-help-circle:{ .lg .middle } __FAQ & Troubleshooting Documentation__ 
 
@@ -57,7 +57,7 @@ I am an experienced Technical Writer with proven success in creating accurate do
 
     Samples of FAQ and Troubleshooting documentation that can be used for general and developer audiences.
 
-    [:octicons-arrow-right-24: View FAQ & Troubleshooting Samples](misc_docs_overview.md)
+    [**View FAQ & Troubleshooting Samples :octicons-arrow-right-24:**](misc_docs_overview.md)
 	
 -   :material-linkedin:{ .lg .middle } __LinkedIn__ 
 
@@ -65,6 +65,6 @@ I am an experienced Technical Writer with proven success in creating accurate do
 
     Review my LinkedIn profile.
 
-    [:octicons-arrow-right-24: LinkedIn](https://www.linkedin.com/in/dennisdufrene/)
+    [**:octicons-arrow-right-24: LinkedIn**](https://www.linkedin.com/in/dennisdufrene/)
 
 </div>
