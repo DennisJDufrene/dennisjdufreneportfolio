@@ -8,6 +8,7 @@ I am a Senior/Principle Technical Writer with broad experience in creating and m
 
 - :material-file-document: **Technical Writing/Editing:** <br> Writing and editing technical documents including user manuals, training manuals, configuration manuals, video tutorials, API documentation, and context sensitive help files.
 - :material-file-code: **Docs-as-Code:** Implementing and using Docs-as-Code processes and technology stacks to create technical documentation. 
+- :material-robot: **Generative AI:** <br> Implementing and using generative AI to facilitate documentation processes and automation.
 - :material-account-supervisor: **Interviewing SMEs:** <br> Interviewing subject-matter experts (SMEs) to gather information.
 - :material-file-find: **Researching Information:** <br> Researching and identifying relevant data for the documentation process. 
 - :material-book: **Implementing Style Guides:** <br> Working knowledge of Chicago Manual of Style, AP Stylebook, and Microsoft Writing Style Guide.
@@ -18,6 +19,7 @@ I am a Senior/Principle Technical Writer with broad experience in creating and m
 ## Software Skills
 
 * **Docs-as-Code:** Markdown, Asciidoc, Pandoc, GFM, MkDocs, Git, GitHub, GitLab, CSS, HTML
+* **Generative AI:** ChatGPT, Google Gemini, Llama, Claude
 * **Microsoft:** Word, PowerPoint, Excel, Visio, Publisher, SharePoint, Visual Studios, Teams
 * **Adobe:** Adobe Professional, Photoshop, Acrobat Reader, Illustrator
 * **Atlassian:** Jira, Confluence (Server and Cloud)
