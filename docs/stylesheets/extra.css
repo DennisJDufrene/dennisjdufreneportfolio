@@ -31,6 +31,6 @@ body p{
 }
 **/
 
-.md-typeset .grid.cards > ol > li, .md-typeset .grid.cards > ul > li, .md-typeset .grid > .card {
+.grid.cards>ul>li {
   background-color: #f2f2f2;
 }
