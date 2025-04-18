@@ -1,0 +1,36 @@
+/**
+.grid-container {
+  display: grid;
+  gap: 25px;
+  grid-template-columns: auto auto auto;
+  margin-top: 10px;
+  overflow: visible;
+  padding: 0 1em;
+}
+
+.grid-item {
+  text-align: center;
+  border: 2px solid grey;
+  border-radius: .1rem;
+  display: block;
+  margin: 0;
+  padding: .8rem;
+  transition: border .25s,box-shadow .25s;
+}
+
+.grid-item:hover {
+  box-shadow: 4px 4px 2px grey;
+
+}
+
+
+body p{
+
+  text-align: justify;
+  text-justify: inter-word;
+}
+**/
+
+.grid.cards>ul>li {
+  background-color: #f2f2f2;
+}
