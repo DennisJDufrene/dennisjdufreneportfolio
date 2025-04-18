@@ -26,6 +26,20 @@ extra:
   analytics:
     provider: google
     property: G-QEDZ9TZX7L
+    feedback:
+      title: Was this page helpful?
+      ratings:
+        - icon: material/thumb-up-outline
+          name: This page was helpful
+          data: 1
+          note: >-
+            Thanks for your feedback!
+        - icon: material/thumb-down-outline
+          name: This page could be improved
+          data: 0
+          note: >- 
+            Thanks for your feedback! Help me improve this page by
+            submitting a <a href="https://github.com/DennisJDufrene/dennisjdufreneportfolio/issues/new/?title=[Feedback]+{title}+-+{url}" target="_blank" rel="noopener">Github Issue</a>.
 
 extra_css:
     - stylesheets/extra.css
