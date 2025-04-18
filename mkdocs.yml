@@ -19,6 +19,10 @@ extra:
     title: Cookie consent
     description: >- 
       My portfolio uses cookies to measure its effectiveness and whether users find what they're searching for. With your consent, you're helping me to improve my portfolio.
+    actions:
+      - accept
+      - manage
+      - reject
   analytics:
     provider: google
     property: G-QEDZ9TZX7L
