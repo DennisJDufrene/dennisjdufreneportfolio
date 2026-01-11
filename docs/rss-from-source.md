@@ -1,4 +1,4 @@
-# How to find an RSS URL by Viewing Page Source?
+# Find RSS URLs Using Page Source
 
 If you are having trouble finding the RSS Feed URL for a site, try viewing the page source. This post will walk you through a quick way to see if a site publishes an RSS or Atom feed by viewing the page source. Don't worry, it is not as technical as it sounds.
 
