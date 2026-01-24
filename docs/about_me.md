@@ -2,7 +2,7 @@
 
 ## Overview
 
-I am a Senior/Principle Technical Writer with broad experience in creating and maintaining large document repositories, documentation processes, and documentation maturity models that result in easily accessible documentation for both business and development users. This broad experience includes:
+I am a Senior/Principal Technical Writer with broad experience in creating and maintaining large document repositories, documentation processes, and documentation maturity models that result in easily accessible documentation for both business and development users. This broad experience includes:
 
 <div class="grid cards" markdown>
 
