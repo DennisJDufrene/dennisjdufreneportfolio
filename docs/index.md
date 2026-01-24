@@ -5,7 +5,7 @@ hide:
 
 # Dennis Dufrene
 
-## Senior/Principle Technical Writer
+## Senior/Principal Technical Writer
 
 I am an experienced Technical Writer with proven success in creating accurate documentation for a wide variety of technical and non-technical audiences. Click the following tiles to learn more about me and/or view samples of my work.
 
