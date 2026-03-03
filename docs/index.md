@@ -3,13 +3,11 @@ hide:
   - toc
 ---
 
-# Dennis Dufrene
+# Dennis Dufrene - Senior/Principal Technical Writer
 
-## Senior/Principal Technical Writer
-
-***I turn complex systems into documentation that developers trust and users actually read.***
-
-Browse my work below. It includes everything from API references and SDK guides to end-user manuals and process frameworks.
+***I turn complex systems into documentation that developers trust and users actually read.*** 
+<br>
+<br>
 
 <div markdown style="text-align:right;">
 [Download My Resume ⬇ ](DennisDufreneResume.pdf){ .md-button .md-button--primary }
