@@ -13,6 +13,7 @@ Browse my work below. It includes everything from API references and SDK guides 
 
 <div markdown style="text-align:right;">
 [⬇ Download My Resume](DennisDufreneResume.pdf){ .md-button .md-button--primary }
+[View My LinkedIn :fontawesome-brands-linkedin:](https://www.linkedin.com/in/dennisdufrene/){ .md-button }
 </div>
 
 <div class="grid cards" markdown>
