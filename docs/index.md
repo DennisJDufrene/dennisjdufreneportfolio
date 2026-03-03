@@ -12,8 +12,8 @@ hide:
 Browse my work below. It includes everything from API references and SDK guides to end-user manuals and process frameworks.
 
 <div markdown style="text-align:right;">
-[⬇ Download My Resume](DennisDufreneResume.pdf){ .md-button .md-button--primary }
-[View My LinkedIn :fontawesome-brands-linkedin:](https://www.linkedin.com/in/dennisdufrene/){ .md-button }
+[Download My Resume ⬇ ](DennisDufreneResume.pdf){ .md-button .md-button--primary }
+[View My LinkedIn :fontawesome-brands-linkedin: ](https://www.linkedin.com/in/dennisdufrene/){ .md-button }
 </div>
 
 <div class="grid cards" markdown>
@@ -21,57 +21,49 @@ Browse my work below. It includes everything from API references and SDK guides 
 -   :fontawesome-solid-user-tie:{ .lg .middle } __About Me__
 
     ---
-
-    A brief look at my skills and experience.
+    
+    *10+ years bridging the gap between engineering teams and the people who use their work.*
 
     [**Read More :octicons-arrow-right-24:**](about_me.md)
 
 -   :material-file-code:{ .lg .middle } __Developer Documentation__
 
     ---
-
-    Samples of documentation intended for a developer audience.
+    
+    *REST API reference, OpenAPI/Swagger specs, SDK help files, and YAML config docs — written from scratch.*
 
     [**View Developer Docs :octicons-arrow-right-24:**](dev_doc_overview.md)
 
 -   :material-file-document:{ .lg .middle } __User Documentation__
 
     ---
-
-    Samples of documentation intended for a general/business user audience.
+    
+    *Step-by-step guides, product overviews, and stakeholder reports designed for non-technical readers.*
 
     [**View User Docs :octicons-arrow-right-24:**](enduser_doc_overview.md)
 
 -   :material-web-box:{ .lg .middle } __Complete Documentation Site__
 
     ---
-
-    A complete documentation site used to showcase semi-technical information in a clean, easy-to-read, and easy-to-navigate format.
+    
+    *A full end-to-end doc site — structure, navigation, and content built to production standards.*
 
     [**View the Documentation Site :octicons-arrow-right-24:**](complete-site.md)
 
 -   :material-sync:{ .lg .middle } __Process Documentation__
 
     ---
-
-    Samples of documentation that would guide the technical writing process and documentation maturity within an organization.
+    
+    *Documentation request workflows and a maturity model to help orgs scale their writing practice.*
 
     [**View Process Docs :octicons-arrow-right-24:**](process_doc_overview.md)
 
--   :material-help-circle:{ .lg .middle } __FAQ & Troubleshooting Documentation__ 
+-   :material-help-circle:{ .lg .middle } __FAQ & Troubleshooting Documentation__
 
     ---
-
-    Samples of FAQ and Troubleshooting documentation that can be used for general and developer audiences.
+    
+    *Self-service support content that reduces ticket volume for both technical and general users.*
 
     [**View FAQ & Troubleshooting Samples :octicons-arrow-right-24:**](misc_docs_overview.md)
-	
--   :material-linkedin:{ .lg .middle } __LinkedIn__ 
-
-    ---
-
-    Review my LinkedIn profile.
-
-    [**:octicons-arrow-right-24: LinkedIn**](https://www.linkedin.com/in/dennisdufrene/)
 
 </div>
