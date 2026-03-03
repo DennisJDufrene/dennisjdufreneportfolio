@@ -7,7 +7,13 @@ hide:
 
 ## Senior/Principal Technical Writer
 
-I am an experienced Technical Writer with proven success in creating accurate documentation for a wide variety of technical and non-technical audiences. Click the following tiles to learn more about me and/or view samples of my work.
+***I turn complex systems into documentation that developers trust and users actually read.***
+
+Browse my work below. It includes everything from API references and SDK guides to end-user manuals and process frameworks.
+
+<div markdown style="text-align:right;">
+[⬇ Download My Resume](dennis_dufrene_resume.pdf){ .md-button .md-button--primary }
+</div>
 
 <div class="grid cards" markdown>
 
