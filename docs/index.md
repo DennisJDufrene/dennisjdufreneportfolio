@@ -12,7 +12,7 @@ hide:
 Browse my work below. It includes everything from API references and SDK guides to end-user manuals and process frameworks.
 
 <div markdown style="text-align:right;">
-[⬇ Download My Resume](dennis_dufrene_resume.pdf){ .md-button .md-button--primary }
+[⬇ Download My Resume](DennisDufreneResume.pdf){ .md-button .md-button--primary }
 </div>
 
 <div class="grid cards" markdown>
