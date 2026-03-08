@@ -64,7 +64,7 @@ My broad experience includes:
     
     --- 
     
-     ChatGPT, Google Gemini, Llama, Claude — used to accelerate documentation workflows, automate repetitive authoring tasks, and maintain consistency across large content repositories.
+     ChatGPT, Google Gemini, Llama, Claude (all used to accelerate documentation workflows, automate repetitive authoring tasks, and maintain consistency across large content repositories.)
 
 - :material-file-code: **Docs-as-Code**     
     
