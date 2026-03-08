@@ -3,7 +3,7 @@ hide:
   - toc
 ---
 
-# Dennis Dufrene - Senior/Principal Technical Writer
+# Dennis Dufrene - Principal Technical Writer
 
 ***I turn complex systems into documentation that developers trust and users actually read.*** 
 <br>
@@ -20,7 +20,7 @@ hide:
 
     ---
     
-    *10+ years bridging the gap between engineering teams and the people who use their work.*
+    *15+ years bridging the gap between engineering teams and the people who use their work.*
 
     [**Read More :octicons-arrow-right-24:**](about_me.md)
 

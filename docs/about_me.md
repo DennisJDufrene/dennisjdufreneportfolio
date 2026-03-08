@@ -4,7 +4,7 @@
 
 I specialize in making complex systems understandable. This includes REST APIs consumed by developers who live and breathe software or software workflows used by people who do not want to think about the tools they use. 
 
-Over my career I've built documentation from scratch, designed the processes teams use to request and maintain it, and developed maturity models that help organizations treat documentation as a product rather than an afterthought.
+Over my 15+ year career I've built documentation from scratch, designed the processes teams use to request and maintain it, and developed maturity models that help organizations treat documentation as a product rather than an afterthought.
 
 ## Experience
 
