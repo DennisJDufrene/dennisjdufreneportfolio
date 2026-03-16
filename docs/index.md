@@ -3,7 +3,7 @@ hide:
   - toc
 ---
 
-# Dennis Dufrene - Principal Technical Writer
+# **Dennis Dufrene**<br><sup>Principal Technical Writer | Documentation Architect | Docs-as-Code Leader</sup>
 
 ***I turn complex systems into documentation that developers trust and users actually read.*** 
 <br>
