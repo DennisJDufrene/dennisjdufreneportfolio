@@ -28,7 +28,7 @@ hide:
 
     ---
     
-    *REST API reference, OpenAPI/Swagger specs, SDK help files, and YAML config docs that were ritten from scratch.*
+    *REST API reference, OpenAPI/Swagger specs, SDK help files, and YAML config docs that were written from scratch.*
 
     [**View Developer Docs :octicons-arrow-right-24:**](dev_doc_overview.md)
 
