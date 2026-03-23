@@ -52,7 +52,7 @@ plugins:
     - include-markdown
     - img2fig
     - search
-    - macros
+#    - macros
     - table-reader
     - render_swagger
 
@@ -96,6 +96,10 @@ nav:
       - Process Documentation Overview: process_doc_overview.md
       - Technical Documentation Request Process: process_request_doc.md
       - Technical Documentation Maturity Model: tdmm.md
+   - Doc Automation:
+      - Doc Automation Overview: doc_automation_overview.md
+      - Documentation Build & Deploy: build_deploy.md
+      - Stale Content Alert: stale_content.md
    - FAQ & Troubleshooting:
       - FAQ & Troubleshooting Overview: misc_docs_overview.md
       - FAQ: misc_faq.md
