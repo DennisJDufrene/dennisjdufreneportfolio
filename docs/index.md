@@ -28,7 +28,7 @@ hide:
 
     ---
     
-    *REST API reference, OpenAPI/Swagger specs, SDK help files, and YAML config docs — written from scratch.*
+    *REST API reference, OpenAPI/Swagger specs, SDK help files, and YAML config docs that were ritten from scratch.*
 
     [**View Developer Docs :octicons-arrow-right-24:**](dev_doc_overview.md)
 
@@ -55,6 +55,14 @@ hide:
     *Documentation request workflows and a maturity model to help orgs scale their writing practice.*
 
     [**View Process Docs :octicons-arrow-right-24:**](process_doc_overview.md)
+
+-   :material-cog:{ .lg .middle } __Doc Automation__
+
+    ---
+    
+    *Sample GitHub Actions to automate various documentation processes, such as build, deploy, and content alerts.*
+
+    [**View Doc Automation :octicons-arrow-right-24:**](doc_automation_overview.md)
 
 -   :material-help-circle:{ .lg .middle } __FAQ & Troubleshooting Documentation__
 
