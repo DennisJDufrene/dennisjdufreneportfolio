@@ -78,7 +78,8 @@ nav:
    - Developer (Technical) Documentation:
       - Developer Documentation Overview: dev_doc_overview.md
       - API Documentation: get_user.md
-      - OpenAPI (Swagger) Documentation: get_user_swagger.md
+      - OpenAPI Generated Documentation: get_user_swagger.md
+      - OpenAPI Custom Built Documentation: docplatform.md
       - SDK Help File: nameservice.md
       - YAML Help: config_file.md
    - End User (Non-technical) Documentation:
